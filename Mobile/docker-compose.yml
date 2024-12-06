@@ -1,0 +1,20 @@
+version: "3.3"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 8081:8081
+    environment:
+      - NODE_ENV=development
+    networks:
+      - default
+    working_dir: /app
+    volumes:
+      - ./:/app
+    entrypoint: npm run web:dev
+
+networks:
+  default:

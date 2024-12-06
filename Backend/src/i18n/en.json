@@ -1,0 +1,22 @@
+{
+  "invalid_parameter": "Invalid parameter",
+  "existed": " existed",
+  "not_found": " not found",
+  "unauthorized": "Unauthorized",
+
+  "application": "application",
+  "user": "user",
+  "name": "name",
+  "description": "description",
+  "RE-001": "Email already is existing",
+  "LO-001": "Email or password is incorrect",
+  "FO-001": "Email is not found",
+  "FO-002": "Token is invalid",
+  "FO-003": "Code is invalid",
+  "2FA-001": "Token is invalid",
+  "2FA-002": "User already have enabled 2FA",
+  "AU-001": "User is not found",
+  "AU-002": "Current password is incorrect",
+  "2FA-003": "User already haven't enabled 2FA",
+  "internal_server_error": "Internal server error"
+}
