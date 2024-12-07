@@ -17,6 +17,9 @@ const User = new EntitySchema({
         password: {
             type: 'varchar'
         },
+        role_id: {
+            type: 'int',
+        },
         secret: {
             type: 'varchar',
         },
@@ -38,6 +41,12 @@ const User = new EntitySchema({
         }
     },
     relations: {
+      roles: {
+          type: 'many-to-one',
+          target: 'roles',
+          joinColumn: { name: 'role_id' },
+          nullable: true,
+      },
       user_images: {
           type: 'one-to-many',
           target: 'user_images',
