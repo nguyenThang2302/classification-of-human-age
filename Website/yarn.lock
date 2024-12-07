@@ -2641,6 +2641,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/lodash@npm:^4.17.13":
+  version: 4.17.13
+  resolution: "@types/lodash@npm:4.17.13"
+  checksum: d0bf8fbd950be71946e0076b30fd40d492293baea75f05931b6b5b906fd62583708c6229abdb95b30205ad24ce1ed2f48bc9d419364f682320edd03405cc0c7e
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:*":
   version: 22.10.1
   resolution: "@types/node@npm:22.10.1"
@@ -3598,6 +3605,13 @@ __metadata:
   version: 1.1.1
   resolution: "clsx@npm:1.1.1"
   checksum: ff052650329773b9b245177305fc4c4dc3129f7b2be84af4f58dc5defa99538c61d4207be7419405a5f8f3d92007c954f4daba5a7b74e563d5de71c28c830063
+  languageName: node
+  linkType: hard
+
+"clsx@npm:^2.1.0":
+  version: 2.1.1
+  resolution: "clsx@npm:2.1.1"
+  checksum: acd3e1ab9d8a433ecb3cc2f6a05ab95fe50b4a3cfc5ba47abb6cbf3754585fcb87b84e90c822a1f256c4198e3b41c7f6c391577ffc8678ad587fc0976b24fd57
   languageName: node
   linkType: hard
 
@@ -6594,7 +6608,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash@npm:^4.17.15":
+"lodash@npm:^4.17.15, lodash@npm:^4.17.21":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
   checksum: eb835a2e51d381e561e508ce932ea50a8e5a68f4ebdd771ea240d3048244a8d13658acbd502cd4829768c56f2e16bdd4340b9ea141297d472517b83868e677f7
@@ -7898,6 +7912,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-toastify@npm:^10.0.6":
+  version: 10.0.6
+  resolution: "react-toastify@npm:10.0.6"
+  dependencies:
+    clsx: ^2.1.0
+  peerDependencies:
+    react: ">=18"
+    react-dom: ">=18"
+  checksum: 89fa24718eba0800e2bc1f88121a6e119efd87df26344d5b3c86442d4a13fbd65b67932e01bd6442758f4fe3f5eca6c8fc80c1dfb51c8dc2a4ec06bdaf9762da
+  languageName: node
+  linkType: hard
+
 "react@npm:^18.3.1":
   version: 18.3.1
   resolution: "react@npm:18.3.1"
@@ -7917,6 +7943,7 @@ __metadata:
     "@testing-library/jest-dom": ^5.17.0
     "@testing-library/react": ^15.0.7
     "@types/jest": ^29.5.14
+    "@types/lodash": ^4.17.13
     "@types/react": ^18.3.12
     "@types/react-dom": ^18.3.1
     "@typescript-eslint/eslint-plugin": ^5.62.0
@@ -7933,6 +7960,7 @@ __metadata:
     jest: ^29.7.0
     jest-environment-jsdom: ^29.7.0
     lint-staged: ^15.2.10
+    lodash: ^4.17.21
     mdb-react-ui-kit: ^9.0.0
     nookies: ^2.5.2
     npm: ^10.9.2
@@ -7942,6 +7970,7 @@ __metadata:
     react-error-boundary: ^4.1.2
     react-hook-form: ^7.54.0
     react-router-dom: ^6.27.0
+    react-toastify: ^10.0.6
     typescript: ^5.7.2
     vite: ^5.4.10
     vite-plugin-environment: ^1.1.3

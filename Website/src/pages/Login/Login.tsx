@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
-import React from 'react';
+import React, { useState} from 'react';
+import * as _ from 'lodash';
 import {
   MDBBtn,
   MDBContainer,
@@ -12,8 +13,42 @@ import {
 }
 from 'mdb-react-ui-kit';
 import './style.css';
+import { emailValidator, passwordValidator } from '../../helpers';
+import { handleLogin } from '../../services/auth';
+import { toast } from 'react-toastify';
 
 function Login() {
+  const [email, setEmail] = useState({ value: '', error: '' });
+  const [password, setPassword] = useState({ value: '', error: '' });
+
+  const onLoginPressed = () => {
+    const emailError = emailValidator(email.value);
+    const passwordError = passwordValidator(password.value);
+    if (emailError || passwordError) {
+      setEmail({ ...email, error: emailError });
+      setPassword({ ...password, error: passwordError });
+      return;
+    }
+
+    const requestBody = {
+      email: email.value,
+      password: password.value,
+    };
+
+    handleLogin(requestBody)
+      .then(response => {
+        if (response.data.data.is_enable_2fa) {
+          localStorage.setItem('temp_access_token', response.data.access_token);
+        } else {
+          toast.success('Login successfully');
+          localStorage.setItem('access_token', response.data.access_token);
+        }
+      })
+      .catch(e => {
+        toast.error(e.error.message);
+      });
+  }
+
   return (
     <MDBContainer fluid>
 
@@ -26,12 +61,22 @@ function Login() {
               <h2 className="fw-bold mb-2 text-center">Sign in</h2>
               <p className="text-white-50 mb-3">Please enter your login and password!</p>
 
-              <MDBInput wrapperClass='mb-4 w-100' label='Email address' id='formControlLg' type='email' size="lg"/>
-              <MDBInput wrapperClass='mb-4 w-100' label='Password' id='formControlLg' type='password' size="lg"/>
+              <MDBInput wrapperClass='mb-4 w-100' label='Email address' id='formControlLg' type='email' size="lg" value={email.value} onChange={(e) => setEmail({ value: e.target.value, error: '' })}/>
+              {email.error && (
+                <span className="error-message">
+                  {email.error}
+                </span>
+              )}
+              <MDBInput wrapperClass='mb-4 w-100' label='Password' id='formControlLg' type='password' size="lg" value={password.value} onChange={(e) => setPassword({ value: e.target.value, error: '' })}/>
+              {password.error && (
+                <span className="error-message">
+                  {password.error}
+                </span>
+              )}
 
               <MDBCheckbox name='flexCheck' id='flexCheckDefault' className='mb-4' label='Remember password' />
 
-              <MDBBtn size='lg'>
+              <MDBBtn size='lg' onClick={onLoginPressed}>
                 Sign in
               </MDBBtn>
 
