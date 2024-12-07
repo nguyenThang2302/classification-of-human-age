@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import { useRoutePaths } from "@/hooks";
-import { Home, Login, Metrics, Register, Users } from "@/pages";
+import { Home, Login, Metrics, Register, Users, DashboardUser } from "@/pages";
 import { PrivateRoute } from "../PrivateRoute";
 import { PublicRoute } from "../PublicRoute";
 
@@ -12,6 +12,7 @@ function Router() {
     ROOT_PATH,
     USERS_PATH,
     USER_PATH,
+    DASHBOARD_PATH
   } = useRoutePaths();
 
   return (
@@ -35,6 +36,8 @@ function Router() {
       />
 
       <Route path={REGISTER_PATH} element={<Register />} />
+
+      <Route path={DASHBOARD_PATH} element={<DashboardUser />} />
 
       <Route
         path={METRICS_PATH}

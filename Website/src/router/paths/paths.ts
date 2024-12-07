@@ -4,6 +4,7 @@ const REGISTER_PATH = "/register";
 const METRICS_PATH = "/metrics";
 const USERS_PATH = "/users";
 const USER_PATH = "/users/:id";
+const DASHBOARD_PATH = "/dashboard";
 
 const paths = {
   ROOT_PATH,
@@ -12,6 +13,7 @@ const paths = {
   METRICS_PATH,
   USERS_PATH,
   USER_PATH,
+  DASHBOARD_PATH,
 } as const;
 
 export default paths;
