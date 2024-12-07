@@ -17,3 +17,8 @@ Constants.JWT = Object.freeze({
 
 Constants.ACCESS_FROM_MOBILE = 'mobile';
 Constants.QUERY_ACCESS_NAME = 'access-from';
+
+Constants.ROLES = Object.freeze({
+  ADMIN: 1,
+  USER: 2
+});

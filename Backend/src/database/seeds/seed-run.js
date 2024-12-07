@@ -1,6 +1,6 @@
 require('reflect-metadata');
 const { AppDataSource } = require('../ormconfig');
-const seedUsers = require('./users/user.seed');
+const seedRoles = require('./roles/role.seed');
 
 async function runSeeds() {
   try {
@@ -8,7 +8,7 @@ async function runSeeds() {
 
     await AppDataSource.initialize();
 
-    await seedUsers();
+    await seedRoles();
 
     console.log('All seeds executed successfully');
   } catch (error) {
