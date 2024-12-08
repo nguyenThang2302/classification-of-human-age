@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "face"
+version = "0.1.0"
+description = ""
+authors = ["c"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+cloudinary = "^1.41.0"
+pre-commit = "^4.0.1"
+pylint = "^3.3.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
