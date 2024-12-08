@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import './Sidebar.css';
+import '../SideBar/SideBar.css';
 import { FaUpload } from 'react-icons/fa';
 
 const Sidebar = ({ onMenuClick }: any) => {
