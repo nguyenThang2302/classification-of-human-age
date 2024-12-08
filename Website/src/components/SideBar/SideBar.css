@@ -21,6 +21,7 @@ body {
   color: rgb(20, 21, 34);
   padding: 10px;
   text-align: left;
+  /* margin-left: 15px; */
   cursor: pointer;
   font-size: 16px;
   border-radius: 10px;
