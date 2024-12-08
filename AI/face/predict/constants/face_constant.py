@@ -1,0 +1,4 @@
+"""Face constants."""
+
+MAX_IMAGE_SIZE = 10 * 1024 * 1024  # 10MB
+MAX_LENGTH_FILE_NAME = 100
