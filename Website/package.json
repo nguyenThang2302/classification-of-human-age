@@ -28,6 +28,7 @@
     "@types/lodash": "^4.17.13",
     "axios": "^1.7.8",
     "i": "^0.3.7",
+    "jwt-decode": "^4.0.0",
     "lodash": "^4.17.21",
     "mdb-react-ui-kit": "^9.0.0",
     "nookies": "^2.5.2",
