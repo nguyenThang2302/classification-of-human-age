@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
 import '../SideBar/SideBar.css';
-import { FaUpload, FaSignOutAlt } from 'react-icons/fa';
+import { FaUpload, FaSignOutAlt, FaUser } from 'react-icons/fa';
 
 const SidebarAdmin = ({ onMenuClick }: any) => {
   return (
@@ -11,6 +11,10 @@ const SidebarAdmin = ({ onMenuClick }: any) => {
         Convert
       </button>
       <button onClick={() => onMenuClick('history')}>Admin</button>
+      <button onClick={() => onMenuClick('profile')}>
+        <FaUser style={{ marginRight: '8px' }} />
+        Profile
+      </button>
       <button onClick={() => onMenuClick('logout')}>
         <FaSignOutAlt style={{ marginRight: '8px' }} />
         Logout
