@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
-import React, { useState} from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import * as _ from 'lodash';
 import {
   MDBBtn,
@@ -17,7 +18,9 @@ import { emailValidator, passwordValidator } from '../../helpers';
 import { handleLogin } from '../../services/auth';
 import { toast } from 'react-toastify';
 
+
 function Login() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState({ value: '', error: '' });
   const [password, setPassword] = useState({ value: '', error: '' });
 
@@ -38,10 +41,11 @@ function Login() {
     handleLogin(requestBody)
       .then(response => {
         if (response.data.data.is_enable_2fa) {
-          localStorage.setItem('temp_access_token', response.data.access_token);
+          localStorage.setItem('temp_access_token', response.data.data.access_token);
         } else {
           toast.success('Login successfully');
-          localStorage.setItem('access_token', response.data.access_token);
+          localStorage.setItem('access_token', response.data.data.access_token);
+          navigate('/dashboard');
         }
       })
       .catch(e => {

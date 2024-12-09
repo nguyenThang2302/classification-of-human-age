@@ -14,7 +14,7 @@ function PublicRoute(props: Props) {
   const { isAuthenticated } = useSession();
 
   if (isAuthenticated) {
-    return <Navigate to="/" />;
+    return <Navigate to="/dashboard" />;
   }
 
   return (
