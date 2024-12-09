@@ -16,10 +16,23 @@ function Router() {
     DASHBOARD_PATH
   } = useRoutePaths();
 
-  const { isAdmin } = useSession();
+  const { isAdmin, isAuthenticated } = useSession();
 
   return (
     <Routes>
+      <Route
+        path={ROOT_PATH}
+        element={
+          <PrivateRoute redirectTo={LOGIN_PATH}>
+            {isAuthenticated ? (
+              isAdmin ? <DashboardAdmin /> : <DashboardUser />
+            ) : (
+              <Login />
+            )}
+          </PrivateRoute>
+        }
+      />
+
       <Route
         path={DASHBOARD_PATH}
         element={

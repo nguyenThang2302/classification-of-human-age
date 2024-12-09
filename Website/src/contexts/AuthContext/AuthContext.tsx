@@ -7,6 +7,11 @@ export type User = {
   roles: string[];
 };
 
+export type UserProfile = {
+  name: string;
+  email: string;
+};
+
 export type SignInCredentials = {
   email: string;
   password: string;
@@ -16,6 +21,7 @@ export type AuthContextData = {
   user?: User;
   isAuthenticated: boolean;
   isAdmin: boolean;
+  userProfile?: UserProfile;
   loadingUserData: boolean;
   signIn: (credentials: SignInCredentials) => Promise<void | AxiosError>;
   signOut: () => void;
