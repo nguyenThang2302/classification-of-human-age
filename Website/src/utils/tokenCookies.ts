@@ -1,4 +1,6 @@
 import { destroyCookie, parseCookies, setCookie } from "nookies";
+import { jwtDecode } from "jwt-decode";
+import * as _ from "lodash";
 import {
   COOKIE_EXPIRATION_TIME,
   REFRESH_TOKEN_COOKIE,
@@ -34,8 +36,13 @@ export function removeSessionCookies() {
 }
 
 export function getToken() {
-  const cookies = parseCookies();
-  return cookies[TOKEN_COOKIE];
+  return localStorage.getItem('access_token');
+}
+
+export function isAdminRole(token: string) {
+  if (!token) return false;
+  const payload = jwtDecode(token);
+  return _.get(payload, 'role_id') === 1;
 }
 
 export function getRefreshToken() {

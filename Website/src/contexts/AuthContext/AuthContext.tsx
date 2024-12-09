@@ -15,6 +15,7 @@ export type SignInCredentials = {
 export type AuthContextData = {
   user?: User;
   isAuthenticated: boolean;
+  isAdmin: boolean;
   loadingUserData: boolean;
   signIn: (credentials: SignInCredentials) => Promise<void | AxiosError>;
   signOut: () => void;

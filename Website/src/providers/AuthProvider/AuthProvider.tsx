@@ -4,7 +4,7 @@ import { AxiosError } from "axios";
 import { AuthContext, SignInCredentials, User } from "@/contexts";
 import { paths } from "@/router";
 import { api, setAuthorizationHeader } from "@/services";
-import { createSessionCookies, getToken, removeSessionCookies } from "@/utils";
+import { createSessionCookies, getToken, isAdminRole, removeSessionCookies } from "@/utils";
 
 type Props = {
   children: ReactNode;
@@ -19,6 +19,7 @@ function AuthProvider(props: Props) {
   const { pathname } = useLocation();
 
   const token = getToken();
+  const isAdmin = isAdminRole(token as string);
   const isAuthenticated = Boolean(token);
 
   async function signIn(params: SignInCredentials) {
@@ -59,10 +60,10 @@ function AuthProvider(props: Props) {
       setLoadingUserData(true);
 
       try {
-        const response = await api.get("/me");
+        const response = await api.get("/users/me");
 
         if (response?.data) {
-          const { email, permissions, roles } = response.data;
+          const { email, permissions, roles } = response.data.data;
           setUser({ email, permissions, roles });
         }
       } catch (error) {
@@ -84,6 +85,7 @@ function AuthProvider(props: Props) {
     <AuthContext.Provider
       value={{
         isAuthenticated,
+        isAdmin,
         user,
         loadingUserData,
         signIn,

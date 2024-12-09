@@ -1,8 +1,9 @@
 import { Routes, Route } from "react-router-dom";
 import { useRoutePaths } from "@/hooks";
-import { Home, Login, Metrics, Register, Users, DashboardUser } from "@/pages";
+import { Home, Login, Metrics, Register, Users, DashboardUser, DashboardAdmin } from "@/pages";
 import { PrivateRoute } from "../PrivateRoute";
 import { PublicRoute } from "../PublicRoute";
+import { useSession } from "@/hooks";
 
 function Router() {
   const {
@@ -15,13 +16,16 @@ function Router() {
     DASHBOARD_PATH
   } = useRoutePaths();
 
+  const { isAdmin } = useSession();
+  console.log(isAdmin);
+
   return (
     <Routes>
       <Route
-        path={ROOT_PATH}
+        path={DASHBOARD_PATH}
         element={
           <PrivateRoute redirectTo={LOGIN_PATH}>
-            <Home />
+            {isAdmin ? <DashboardAdmin /> : <DashboardUser />}
           </PrivateRoute>
         }
       />
@@ -35,9 +39,14 @@ function Router() {
         }
       />
 
-      <Route path={REGISTER_PATH} element={<Register />} />
-
-      <Route path={DASHBOARD_PATH} element={<DashboardUser />} />
+      <Route
+        path={REGISTER_PATH}
+        element={
+          <PublicRoute>
+            <Register />
+          </PublicRoute>
+        }
+      />
 
       <Route
         path={METRICS_PATH}
