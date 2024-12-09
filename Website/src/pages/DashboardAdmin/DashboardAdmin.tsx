@@ -10,6 +10,9 @@ function DashboardAdmin() {
       return <Uploads />;
     } else if (selectedSection === 'history') {
       return <History />;
+    } else if (selectedSection === 'logout') {
+      localStorage.removeItem('access_token');
+      window.location.href = '/login';
     }
   };
 

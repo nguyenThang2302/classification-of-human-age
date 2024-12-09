@@ -17,7 +17,6 @@ function Router() {
   } = useRoutePaths();
 
   const { isAdmin } = useSession();
-  console.log(isAdmin);
 
   return (
     <Routes>
