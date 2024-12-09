@@ -5,3 +5,4 @@ export * from "./NavBar";
 export * from './History';
 export * from './SideBar';
 export * from './Upload';
+export * from './Profile';

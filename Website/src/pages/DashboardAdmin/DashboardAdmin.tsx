@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React, { useState } from 'react';
-import { Uploads, History, SidebarAdmin } from '@/components';
+import { Uploads, History, SidebarAdmin, Profile } from '@/components';
 
 function DashboardAdmin() {
   const [selectedSection, setSelectedSection] = useState('uploads');
@@ -13,6 +13,8 @@ function DashboardAdmin() {
     } else if (selectedSection === 'logout') {
       localStorage.removeItem('access_token');
       window.location.href = '/login';
+    } else if (selectedSection === 'profile') {
+      return <Profile />;
     }
   };
 
