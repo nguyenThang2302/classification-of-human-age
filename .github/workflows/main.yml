@@ -59,8 +59,8 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/qa/ai/')
         run: |
           cd AI
-          docker build -t my-fast-app:latest .
-          docker run -d my-fast-app:latest  
+          docker build -t my-django-app:latest .
+          docker run -d my-django-app:latest  
 
       - name: Push image AI to Docker Hub
         if: startsWith(github.ref, 'refs/tags/qa/ai/')
@@ -68,7 +68,7 @@ jobs:
         with:
           context: ./AI 
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/my-fast-app:${{ github.sha }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/my-django-app:${{ github.sha }}
 
   deploy:
     needs: build_and_test
@@ -114,7 +114,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             # Deploy AI if the tag starts with qa/ai/
-            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/my-fast-app:${{ github.sha }}
-            docker stop my-fast-app || true
-            docker rm my-fast-app || true
-            sudo docker run -d --network my-network -p 8000:8000 --name my-fast-app ${{ secrets.DOCKERHUB_USERNAME }}/my-fast-app:${{ github.sha }}
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/my-django-app:${{ github.sha }}
+            docker stop my-django-app || true
+            docker rm my-django-app || true
+            sudo docker run -d --network my-network -p 8000:8000 --name my-django-app ${{ secrets.DOCKERHUB_USERNAME }}/my-django-app:${{ github.sha }}
