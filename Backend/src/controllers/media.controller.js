@@ -7,7 +7,7 @@ const Controller = module.exports;
 
 Controller.uploadImages = async (req, res, next) => {
   try {
-    // addImageToQueue(req, res, next);
+    addImageToQueue(req, res, next);
     const response = req['res_load_model'];
     const originImage = response['origin_image'];
     const predictedImage = response['predicted_image'];
