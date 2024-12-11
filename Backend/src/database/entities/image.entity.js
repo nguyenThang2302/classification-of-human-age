@@ -32,6 +32,11 @@ const Image = new EntitySchema({
           type: 'one-to-many',
           target: 'user_images',
           inverseSide: 'image',
+      },
+      image_details: {
+          type: 'one-to-many',
+          target: 'image_details',
+          inverseSide: 'image',
       }
     }
 });
