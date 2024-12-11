@@ -6,6 +6,7 @@ const cors = require('cors');
 const compression = require('compression');
 const cookieParser = require('cookie-parser');
 const _ = require('lodash');
+const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const { CORS_WHITELIST_HOSTS } = process.env;
 

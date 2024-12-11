@@ -20,13 +20,7 @@ function addRoutes(router, middleware, controllers) {
           body: formData
         });
         const data = await response.json();
-        if (data.prediction.description !== null) {
-          const jsonString = data.prediction.description
-            .replace(/```json\n|```/g, '').trim();
-          const jsonObject = JSON.parse(jsonString);
-          req['description'] = jsonObject;
-        }
-        req['prediction'] = data.prediction;
+        req['res_load_model'] = data;
       } catch (error) {
         return next(error);
       }

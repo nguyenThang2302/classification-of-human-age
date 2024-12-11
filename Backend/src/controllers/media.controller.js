@@ -7,9 +7,12 @@ const Controller = module.exports;
 
 Controller.uploadImages = async (req, res, next) => {
   try {
-    addImageToQueue(req, res, next);
-
-    return ok(req, res, MediaMapper.toUploadImageResponse(req['prediction'].predicted_class, req['prediction'].confidence, req['description']));
+    // addImageToQueue(req, res, next);
+    const response = req['res_load_model'];
+    const originImage = response['origin_image'];
+    const predictedImage = response['predicted_image'];
+    const seperatedImages = response['seperated_images'];
+    return ok(req, res, MediaMapper.toUploadImageResponse(predictedImage, seperatedImages));
   } catch (error) {
     return next(error);
   }
