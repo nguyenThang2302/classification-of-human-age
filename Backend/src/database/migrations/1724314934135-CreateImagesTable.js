@@ -8,7 +8,8 @@ module.exports = class CreateImagesTable1724314934135 {
             CREATE TABLE \`images\` (
                 \`id\` int NOT NULL AUTO_INCREMENT,
                 \`name\` varchar(255) NOT NULL,
-                \`url\` varchar(255) NOT NULL,
+                \`origin_url\` varchar(255) NOT NULL,
+                \`predicted_url\` varchar(255) NOT NULL,
                 \`created_at\` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
                 \`updated_at\` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
                 \`deleted_at\` timestamp NULL,

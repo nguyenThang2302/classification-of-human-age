@@ -1,9 +1,25 @@
-/* eslint-disable prettier/prettier */
-import React, { useState } from 'react';
+import { submitImage } from '@/services/media/submitImage';
+import React, { useState, useEffect } from 'react';
 import { FaSyncAlt, FaImage } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 
+type SeperatedImage = {
+  base64_url: string;
+  age: number;
+  gender: number;
+}
+
+type PredictedImage = {
+  base64_url: string;
+}
+
+type UploadResponse = {
+  predicted_image: PredictedImage;
+  seperated_images: SeperatedImage[];
+}
+
 const Uploads = () => {
+  const [uploadResponse, setUploadResponse] = useState<UploadResponse | null>(null);
   const [image, setImage] = useState<string | null>(null);
   const [scannedImage, setScannedImage] = useState<string | null>(null);
   const [isScanning, setIsScanning] = useState<boolean>(false);
@@ -18,18 +34,33 @@ const Uploads = () => {
     }
   };
 
-  const handleConvert = () => {
+  const handleConvert = async () => {
     if (!image) {
       toast.warning('Please upload an image first!');
       return;
     }
 
+    const unixTimestamp = Date.now();
+
+    const responseImage = await fetch(image);
+    const blob = await responseImage.blob();
+    const file = new File([blob], `${unixTimestamp}.jpg`, { type: 'image/jpeg' });
+
+    const formData = new FormData();
+    formData.append('image', file);
+
     setIsScanning(true);
-    setTimeout(() => {
+    try {
+      const response = await submitImage(formData);
+      console.log(response.data)
+      setUploadResponse(response.data);
       setIsScanning(false);
-      setScannedImage(image);
       toast.success('Image scanned successfully!');
-    }, 3000);
+    } catch (error) {
+      console.error(error);
+      toast.error('Failed to scan the image. Please try again.');
+      setIsScanning(false);
+    }
   };
 
   return (
@@ -113,7 +144,7 @@ const Uploads = () => {
       />
 
       {/* Scanned Image Frame */}
-      {scannedImage && (
+      {uploadResponse && (
         <div
           style={{
             width: '300px',
@@ -123,7 +154,7 @@ const Uploads = () => {
             margin: '20px auto 0',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
-            backgroundImage: `url(${scannedImage})`,
+            backgroundImage: `url(${uploadResponse.predicted_image.base64_url})`,
             cursor: 'pointer',
           }}
           onClick={() => setIsModalOpen(true)}
@@ -160,7 +191,7 @@ const Uploads = () => {
             onClick={(e) => e.stopPropagation()}
           >
             <img
-              src={scannedImage}
+              src={uploadResponse?.predicted_image.base64_url}
               alt="Scanned"
               style={{ width: '100%', display: 'block' }}
             />

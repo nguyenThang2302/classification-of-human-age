@@ -6,6 +6,7 @@ from rest_framework import serializers
 from predict.utils.file_util import convert_image_to_base64
 from predict.constants.face_constant import MAX_LENGTH_FILE_NAME, MAX_IMAGE_SIZE
 from predict.models.face_age_net import face_age_net
+import base64
 
 
 

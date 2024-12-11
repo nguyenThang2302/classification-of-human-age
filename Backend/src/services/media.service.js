@@ -4,18 +4,16 @@ const Image = require('../database/entities/image.entity');
 const UserImage = require('../database/entities/user_image.entity');
 const {ok} = require('../helpers/response.helper');
 const config = require('../config/config');
+const ImageDetails = require('../database/entities/image_details.entity');
 const MediaService = module.exports;
 
 const imageRepository = AppDataSource.getRepository(Image);
 const userImageRepository = AppDataSource.getRepository(UserImage);
+const imageDetailRepository = AppDataSource.getRepository(ImageDetails);
 
-MediaService.insertImage = async (userID, urlImage, result) => {
+MediaService.insertImage = async (userID, images, imageDetails) => {
   try {
-
-    const imageData = imageRepository.create({
-      name: result,
-      url: urlImage
-    });
+    const imageData = imageRepository.create(images);
     await imageRepository.save(imageData);
 
     const userImageData = userImageRepository.create({
@@ -23,6 +21,12 @@ MediaService.insertImage = async (userID, urlImage, result) => {
       image_id: imageData.id
     });
     await userImageRepository.save(userImageData);
+
+    for (const imageDetail of imageDetails) {
+      imageDetail['image_id'] = imageData.id;
+      const imageDetailSave = imageDetailRepository.create(imageDetail);
+      await imageDetailRepository.save(imageDetailSave);
+    }
   } catch (error) {
     return next(error);
   }
