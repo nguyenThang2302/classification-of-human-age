@@ -1,17 +1,17 @@
 import { instance } from '../instance';
 
 
-export const fetchHistoryImages = async (offset: any, limit: any) => {
+export const getHistoryImageDetail = async (image_id: any) => {
   try {
     const accessToken = localStorage.getItem('access_token');
-    const response = await instance.get(`media/images?offset=${offset}&limit=${limit}`, {
+    const response = await instance.get(`media/images/${image_id}`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
     });
     return response.data.items;
   } catch (error) {
-    console.error('Error fetching history images:', error);
+    console.error('Error fetching history image details:', error);
     throw error;
   }
 };

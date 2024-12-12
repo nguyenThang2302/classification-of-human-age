@@ -174,7 +174,7 @@ const History = () => {
                   </td>
                   <td>{format(new Date(row.created_at), 'yyyy-MM-dd HH:mm')}</td>
                   <td>
-                    <a href={`/history/${row.id}`}>
+                    <a href={`/history/image-details/${row.id}`}>
                       <FaEye />
                     </a>
                   </td>
