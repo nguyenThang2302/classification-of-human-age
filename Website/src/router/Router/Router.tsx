@@ -1,9 +1,11 @@
 import { Routes, Route } from "react-router-dom";
 import { useRoutePaths } from "@/hooks";
-import { Home, Login, Metrics, Register, Users, DashboardUser, DashboardAdmin } from "@/pages";
+import { Home, Login, Metrics, Register, Users, DashboardUser, DashboardAdmin, HistoryImageDetail } from "@/pages";
 import { PrivateRoute } from "../PrivateRoute";
 import { PublicRoute } from "../PublicRoute";
 import { useSession } from "@/hooks";
+import { Sidebar, Uploads, History, Profile } from "@/components";
+import { useState } from "react";
 
 function Router() {
   const {
@@ -13,10 +15,27 @@ function Router() {
     ROOT_PATH,
     USERS_PATH,
     USER_PATH,
-    DASHBOARD_PATH
+    DASHBOARD_PATH,
+    HISTORYIMAGEDETAIL_PATH
   } = useRoutePaths();
 
   const { isAdmin } = useSession();
+
+  const [selectedSection, setSelectedSection] = useState('history-image-details');
+  const renderSection = () => {
+    if (selectedSection === 'uploads') {
+      return <Uploads />;
+    } else if (selectedSection === 'history') {
+      return <History />;
+    } else if (selectedSection === 'logout') {
+      localStorage.removeItem('access_token');
+      window.location.href = '/login';
+    } else if (selectedSection === 'profile') {
+      return <Profile />;
+    } else if (selectedSection === 'history-image-details') {
+      return <HistoryImageDetail />;
+    }
+  };
 
   return (
     <Routes>
@@ -25,6 +44,18 @@ function Router() {
         element={
           <PrivateRoute redirectTo={LOGIN_PATH}>
             {isAdmin ? <DashboardAdmin /> : <DashboardUser />}
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path={HISTORYIMAGEDETAIL_PATH}
+        element={
+          <PrivateRoute redirectTo={LOGIN_PATH}>
+            <div className="dashboard">
+              <Sidebar onMenuClick={setSelectedSection} />
+              <div className="content">{renderSection()}</div>
+            </div>
           </PrivateRoute>
         }
       />

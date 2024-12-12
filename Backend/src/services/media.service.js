@@ -70,16 +70,12 @@ MediaService.getImageDetail = async (req, res, next) => {
     const userID = req.user['id'];
     const imageID = parseInt(req.params.image_id);
 
-    const imageDetail = await imageRepository.createQueryBuilder('images')
+    const imageDetail = await imageDetailRepository.createQueryBuilder('image_details')
+      .innerJoin('image_details.image', 'images', 'images.id = :image_id', { image_id: imageID })
       .innerJoin('images.user_images', 'user_images', 'user_images.user_id = :user_id', { user_id: userID })
-      .select([
-        'images.id as id',
-        'images.name as name',
-        'images.url as url',
-        'images.created_at as created_at'
-      ])
-      .where('images.id = :id', { id: imageID })
-      .getRawOne();
+      .select()
+      .where('image_details.image_id = :image_id', { image_id: imageID })
+      .getMany();
 
     return ok(req, res, MediaMapper.toImageDetailResponse(imageDetail));
   } catch (error) {
