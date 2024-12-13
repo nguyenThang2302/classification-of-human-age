@@ -16,6 +16,7 @@ const authRoutes = require('./auth-route');
 const userRoutes = require('./user-route');
 const mediaRoutes = require('./media-route');
 const chatRoutes = require('./chat-route');
+const adminRoutes = require('./admin-route');
 
 function addRoutes(app, router, middleware) {
   topRoutes(router, middleware, controllers);
@@ -23,6 +24,7 @@ function addRoutes(app, router, middleware) {
   userRoutes(router, middleware, controllers);
   mediaRoutes(router, middleware, controllers);
   chatRoutes(router, middleware, controllers);
+  adminRoutes(router, middleware, controllers);
 }
 
 module.exports = async (app, middleware) => {

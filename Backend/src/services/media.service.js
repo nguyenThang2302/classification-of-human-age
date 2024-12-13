@@ -5,6 +5,7 @@ const UserImage = require('../database/entities/user_image.entity');
 const { ok } = require('../helpers/response.helper');
 const config = require('../config/config');
 const ImageDetails = require('../database/entities/image_details.entity');
+const _ = require('lodash');
 const MediaService = module.exports;
 
 const imageRepository = AppDataSource.getRepository(Image);
@@ -81,4 +82,63 @@ MediaService.getImageDetail = async (req, res, next) => {
   } catch (error) {
     return next(error);
   }
+};
+
+MediaService.getSearchImagesHistory = async (req, res, next) => {
+  const { limit = 10, offset = 1, email = '', date = '' } = req.query;
+  let totalImages = 0;
+  let images = [];
+  const queryBuilder = imageRepository.createQueryBuilder('images')
+    .innerJoin('images.user_images', 'user_images')
+    .innerJoinAndSelect('user_images.user', 'users');
+
+  if (email && date) {
+    const totalImageByEmailAndDate = await queryBuilder
+      .andWhere('users.email = :email', { email })
+      .andWhere('DATE(images.created_at) = :date', { date })
+      .getCount();
+    totalImages += totalImageByEmailAndDate;
+    const imagesByEmailAndDate = await queryBuilder
+      .andWhere('users.email = :email', { email })
+      .andWhere('DATE(images.created_at) = :date', { date })
+      .orderBy('images.created_at', 'DESC')
+      .limit(limit)
+      .offset(limit * (offset - 1))
+      .getMany();
+    images.push(...imagesByEmailAndDate);
+  }
+
+  if (email && !date) {
+    const totalImageByEmail = await queryBuilder.andWhere('users.email = :email', { email }).getCount();
+    totalImages += totalImageByEmail;
+    const imagesByEmail = await queryBuilder.andWhere('users.email = :email', { email })
+      .orderBy('images.created_at', 'DESC')
+      .limit(limit)
+      .offset(limit * (offset - 1))
+      .getMany();
+    images.push(...imagesByEmail);
+  }
+
+  if (date && !email) {
+    const totalImageByDate = await queryBuilder.andWhere('DATE(images.created_at) = :date', { date }).getCount();
+    totalImages += totalImageByDate;
+    const imagesByDate = await queryBuilder.andWhere('DATE(images.created_at) = :date', { date })
+      .orderBy('images.created_at', 'DESC')
+      .limit(limit)
+      .offset(limit * (offset - 1))
+      .getMany();
+    images.push(...imagesByDate);
+  }
+
+  const totalPages = Math.ceil((totalImages) / limit);
+  const paginations = {
+    total: images.length,
+    limit: parseInt(limit),
+    offset: parseInt(offset),
+    current_page: parseInt(offset),
+    total_page: totalPages,
+    has_next_page: offset < totalPages,
+    has_previous_page: offset > 1,
+  };
+  return ok(req, res, MediaMapper.toImagesHistoryResponse(images, paginations));
 };
