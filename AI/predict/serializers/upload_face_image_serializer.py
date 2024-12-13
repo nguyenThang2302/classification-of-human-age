@@ -1,12 +1,10 @@
 """Upload face image serializer."""
 
-import base64
 from rest_framework import serializers
 
-from predict.utils.file_util import convert_image_to_base64
-from predict.constants.face_constant import MAX_LENGTH_FILE_NAME, MAX_IMAGE_SIZE
+from predict.constants.face_constant import MAX_IMAGE_SIZE, MAX_LENGTH_FILE_NAME
 from predict.models.face_age_net import face_age_net
-
+from predict.utils.file_util import convert_image_to_base64
 
 
 class UploadFaceImageSerializer(serializers.Serializer):

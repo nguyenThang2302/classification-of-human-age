@@ -2,9 +2,9 @@
 
 import base64
 from io import BytesIO
-from numpy import ndarray
 
 from django.core.files.uploadedfile import InMemoryUploadedFile
+from numpy import ndarray
 from PIL import Image
 
 
@@ -17,9 +17,9 @@ def convert_image_to_base64(image):
         if isinstance(image, ndarray):
             image = Image.fromarray(image)
         buffer = BytesIO()
-        image.save(buffer, format='jpeg')
+        image.save(buffer, format="jpeg")
         data = buffer.getvalue()
     else:
         raise ValueError(f"Unsupported object type: {type(image)}")
-    
-    return base64.b64encode(data).decode('utf-8')
+
+    return base64.b64encode(data).decode("utf-8")
