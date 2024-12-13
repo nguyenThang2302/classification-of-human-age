@@ -92,6 +92,17 @@ MediaService.getSearchImagesHistory = async (req, res, next) => {
     .innerJoin('images.user_images', 'user_images')
     .innerJoinAndSelect('user_images.user', 'users');
 
+  if (!email && !date) {
+    const totalImage = await queryBuilder.getCount();
+    totalImages += totalImage;
+    const imagesAll = await queryBuilder
+      .orderBy('images.created_at', 'DESC')
+      .limit(limit)
+      .offset(limit * (offset - 1))
+      .getMany();
+    images.push(...imagesAll);
+  }
+
   if (email && date) {
     const totalImageByEmailAndDate = await queryBuilder
       .andWhere('users.email = :email', { email })
