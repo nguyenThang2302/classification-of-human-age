@@ -19,7 +19,19 @@ const History = () => {
   const [data, setData] = useState<Image[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isModalOpenOrigin, setIsModalOpenOrigin] = useState<boolean>(false);
+  const [isModalOpenPredict, setIsModalOpenPredict] = useState<boolean>(false);
+  const [selectedImage, setSelectedImage] = useState("");
+
+  const handleImageOriginClick = (imageUrl: any) => {
+    setSelectedImage(imageUrl);
+    setIsModalOpenOrigin(true);
+  };
+
+  const handleImagePredictClick = (imageUrl: any) => {
+    setSelectedImage(imageUrl);
+    setIsModalOpenPredict(true);
+  };
 
   const fetchData = async (page: any) => {
     setLoading(true);
@@ -81,10 +93,10 @@ const History = () => {
                         backgroundImage: `url(${row.origin_url})`,
                         cursor: 'pointer',
                       }}
-                      onClick={() => setIsModalOpen(true)}
+                      onClick={() => handleImageOriginClick(row.origin_url)}
                     >
                     </div>
-                    {isModalOpen && (
+                    {isModalOpenOrigin && (
                       <div
                         style={{
                           position: 'fixed',
@@ -98,7 +110,7 @@ const History = () => {
                           justifyContent: 'center',
                           zIndex: 10,
                         }}
-                        onClick={() => setIsModalOpen(false)}
+                        onClick={() => setIsModalOpenOrigin(false)}
                       >
                         <div
                           style={{
@@ -112,7 +124,7 @@ const History = () => {
                           onClick={(e) => e.stopPropagation()}
                         >
                           <img
-                            src={row.origin_url}
+                            src={selectedImage}
                             alt="Scanned"
                             style={{ width: '100%', height: '100%', display: 'block' }}
                           />
@@ -133,10 +145,10 @@ const History = () => {
                         backgroundImage: `url(${row.predicted_url})`,
                         cursor: 'pointer',
                       }}
-                      onClick={() => setIsModalOpen(true)}
+                      onClick={() => handleImagePredictClick(row.predicted_url)}
                     >
                     </div>
-                    {isModalOpen && (
+                    {isModalOpenPredict && (
                       <div
                         style={{
                           position: 'fixed',
@@ -150,7 +162,7 @@ const History = () => {
                           justifyContent: 'center',
                           zIndex: 10,
                         }}
-                        onClick={() => setIsModalOpen(false)}
+                        onClick={() => setIsModalOpenPredict(false)}
                       >
                         <div
                           style={{
@@ -164,7 +176,7 @@ const History = () => {
                           onClick={(e) => e.stopPropagation()}
                         >
                           <img
-                            src={row.predicted_url}
+                            src={selectedImage}
                             alt="Scanned"
                             style={{ width: '100%', height: '100%', display: 'block' }}
                           />

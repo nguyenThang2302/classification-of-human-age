@@ -17,6 +17,12 @@ const HistoryImageDetail = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [selectedImage, setSelectedImage] = useState("");
+
+  const handleImageOriginClick = (imageUrl: any) => {
+    setSelectedImage(imageUrl);
+    setIsModalOpen(true);
+  };
 
   const { image_id } = useParams();
 
@@ -78,7 +84,7 @@ const HistoryImageDetail = () => {
                         backgroundImage: `url(${row.secure_url})`,
                         cursor: 'pointer',
                       }}
-                      onClick={() => setIsModalOpen(true)}
+                      onClick={() => handleImageOriginClick(row.secure_url)}
                     >
                     </div>
                     {isModalOpen && (
@@ -109,7 +115,7 @@ const HistoryImageDetail = () => {
                           onClick={(e) => e.stopPropagation()}
                         >
                           <img
-                            src={row.secure_url}
+                            src={selectedImage}
                             alt="Scanned"
                             style={{ width: '100%', height: '100%', display: 'block' }}
                           />
