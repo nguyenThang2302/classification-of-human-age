@@ -4,7 +4,7 @@ import { Home, Login, Metrics, Register, Users, DashboardUser, DashboardAdmin, H
 import { PrivateRoute } from "../PrivateRoute";
 import { PublicRoute } from "../PublicRoute";
 import { useSession } from "@/hooks";
-import { Sidebar, Uploads, History, Profile } from "@/components";
+import { Sidebar, Uploads, History, Profile, SidebarAdmin } from "@/components";
 import { useState } from "react";
 
 function Router() {
@@ -66,7 +66,7 @@ function Router() {
         element={
           <PrivateRoute redirectTo={LOGIN_PATH}>
             <div className="dashboard">
-              <Sidebar onMenuClick={setSelectedSection} />
+              {isAdmin ? <SidebarAdmin onMenuClick={setSelectedSection} /> : <Sidebar onMenuClick={setSelectedSection} /> }
               <div className="content">{renderSection()}</div>
             </div>
           </PrivateRoute>

@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React, { useState } from 'react';
-import { Uploads, History, SidebarAdmin, Profile } from '@/components';
+import { Uploads, History, SidebarAdmin, Profile, Search } from '@/components';
 
 function DashboardAdmin() {
   const [selectedSection, setSelectedSection] = useState('uploads');
@@ -15,6 +15,8 @@ function DashboardAdmin() {
       window.location.href = '/login';
     } else if (selectedSection === 'profile') {
       return <Profile />;
+    } else if (selectedSection === 'search-image') {
+      return <Search />;
     }
   };
 
