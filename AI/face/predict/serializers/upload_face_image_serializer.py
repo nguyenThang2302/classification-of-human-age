@@ -1,16 +1,12 @@
 """Upload face image serializer."""
 
+import base64
 from rest_framework import serializers
 
+from predict.utils.file_util import convert_image_to_base64
 from predict.constants.face_constant import MAX_LENGTH_FILE_NAME, MAX_IMAGE_SIZE
 from predict.models.face_age_net import face_age_net
 
-from predict.utils.cloudinary_util import (
-    FOLDER_LABELED,
-    FOLDER_ORIGIN,
-    FOLDER_PREDICTED,
-    upload_image,
-)
 
 
 class UploadFaceImageSerializer(serializers.Serializer):
@@ -32,23 +28,20 @@ class UploadFaceImageSerializer(serializers.Serializer):
     def create(self, validated_data):
         """Create method."""
         origin_image = validated_data.get("image")
-        origin_image_response = upload_image(origin_image, FOLDER_ORIGIN)
 
         predicted_image, seperated_images = face_age_net.predict(origin_image)
-        predicted_image_reponse = upload_image(predicted_image, FOLDER_PREDICTED)
+        predicted_image_base64 = convert_image_to_base64(predicted_image)
 
         seperated_image_list_response = []
         for seperated_image, gender, age in seperated_images:
             seperated_image_list_response.append(
                 {
-                    **upload_image(seperated_image, FOLDER_LABELED),
+                    "image": convert_image_to_base64(seperated_image),
                     "gender": gender,
                     "age": age,
                 }
             )
-
         return {
-            "origin_image": origin_image_response,
-            "predicted_image": predicted_image_reponse,
+            "predicted_image": predicted_image_base64,
             "seperated_images": seperated_image_list_response,
         }
