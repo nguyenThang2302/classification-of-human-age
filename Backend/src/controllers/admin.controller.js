@@ -1,5 +1,5 @@
 const {ok} = require('../helpers/response.helper');
-const { MediaService } = require('../services/index');
+const { MediaService, UserService } = require('../services/index');
 
 const Controller = module.exports;
 
@@ -10,3 +10,11 @@ Controller.getSearchImagesHistory = async (req, res, next) => {
     return next(error);
   }
 };
+
+Controller.getListMail = async (req, res, next) => {
+  try {
+    await UserService.getListMail(req, res, next);
+  } catch (error) {
+    return next(error);
+  }
+}
