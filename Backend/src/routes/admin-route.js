@@ -7,6 +7,12 @@ function addRoutes(router, middleware, controllers) {
     middleware.adminAuthorizer,
     controllers.adminController.getSearchImagesHistory
   );
+
+  router.get(
+    '/mails',
+    middleware.adminAuthorizer,
+    controllers.adminController.getListMail
+  );
 }
 
 function apiRouter(middleware, controllers) {
