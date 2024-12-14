@@ -7,6 +7,8 @@ import { format } from 'date-fns';
 import { getListMail } from "@/services/user/getListMail";
 import { getImageDetail } from "@/services/admin/getImageDetail";
 import { FaLongArrowAltRight } from "react-icons/fa";
+import { adminUpdateImageDetail } from "@/services/admin/updateImageDetail";
+import { toast } from "react-toastify";
 
 type Image = {
   id: number;
@@ -54,10 +56,65 @@ function Search() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedChangeGender, setSelectedChangeGender] = useState("");
   const [selectedChangeAge, setSelectedChangeAge] = useState("");
+  const [selectedChangeImageId, setSelectedChangeImageId] = useState("");
+  const [isUpdateGender, setIsUpdateGender] = useState(false);
+  const [isUpdateAge, setIsUpdateAge] = useState(false);
+
+
+  const [selectedGenders, setSelectedGenders] = useState({});
+  const [selectedAges, setSelectedAges] = useState({});
+
+  const handleGenderChange = (rowId: any, value: any) => {
+    setSelectedGenders((prev) => ({
+      ...prev,
+      [rowId]: value,
+    }));
+    setSelectedChangeGender(value);
+  };
+
+  const handleAgeChange = (rowId: any, value: any) => {
+    setSelectedAges((prev) => ({
+      ...prev,
+      [rowId]: value,
+    }));
+    setSelectedChangeAge(value);
+  }
+
+
+  const updateImageDetail = async (image_detail_id: any, gender: any, age: any) => {
+    try {
+      const body = {
+        image_id: selectedChangeImageId,
+        age: selectedChangeAge === '' ? age : parseInt(selectedChangeAge),
+        gender: (selectedChangeGender === 'Male' ? 0 : (selectedChangeGender === 'Female' ? 1 : gender)),
+      };
+      const response = await adminUpdateImageDetail(image_detail_id, body);
+      const checkGender = gender === 0 ? 'Male' : (gender === 1 ? 'Famale' : '');
+      if (checkGender !== selectedChangeGender && selectedChangeGender !== '') {
+        setIsUpdateGender(true);
+        setSelectedGenders({});
+      }
+      if (age !== selectedChangeAge && selectedChangeAge !== '') {
+        setIsUpdateAge(true);
+        setSelectedAges({});
+      }
+      if (response.data.message === 'Success') {
+        toast.success("Update image details successfully!");
+        const response = await getImageDetail(selectedChangeImageId);
+        setDataImageDetails(response);
+      }
+    } catch (error) {
+      console.error("Error update image details:", error);
+      throw error;
+    }
+  };
 
   const openModal = async (imageId: any) => {
     try {
       setIsModalOpen(true);
+      setSelectedChangeImageId(imageId);
+      setSelectedChangeGender('');
+      setSelectedChangeAge('');
       const response = await getImageDetail(imageId);
       setDataImageDetails(response);
     } catch (error) {
@@ -66,7 +123,10 @@ function Search() {
     }
   };
 
+
   const closeModal = () => {
+    setIsUpdateAge(false);
+    setIsUpdateGender(false);
     setIsModalOpen(false);
   };
 
@@ -344,9 +404,9 @@ function Search() {
                                   </div>
                                 </td>
                                 <td>
-                                  <text>{row?.gender === 0 ? 'Male' : 'Female'}</text>
+                                  <p>{(row?.gender === 0 ? 'Male' : 'Female')}</p>
                                   <FaLongArrowAltRight style={{ marginLeft: '8px', marginRight: '8px' }} />
-                                  <select id="dropdown" value={selectedChangeGender} onChange={(e) => setSelectedChangeGender(e.target.value)}>
+                                  <select id={`dropdown-gender-${row.id}`} value={selectedGenders[row.id] || ""} onChange={(e) => handleGenderChange(row.id, e.target.value)}>
                                     <option value="" disabled>
                                       -- Select an option --
                                     </option>
@@ -358,9 +418,9 @@ function Search() {
                                   </select>
                                 </td>
                                 <td>
-                                  <text>{row?.age}</text>
+                                  <p>{row?.age}</p>
                                   <FaLongArrowAltRight style={{ marginLeft: '8px', marginRight: '8px' }} />
-                                  <select id="dropdown" value={selectedChangeAge} onChange={(e) => setSelectedChangeAge(e.target.value)}>
+                                  <select id={`dropdown-age-${row.id}`} value={selectedAges[row.id] || ""} onChange={(e) => handleAgeChange(row.id, e.target.value)}>
                                     <option value="" disabled>
                                       -- Select an option --
                                     </option>
@@ -372,7 +432,7 @@ function Search() {
                                   </select>
                                 </td>
                                 <td>
-                                  <button className="btn-search" style={{ marginBottom: "10px", backgroundColor: '#17a2b8', borderColor: '#17a2b8' }}>
+                                  <button className="btn-search" onClick={() => updateImageDetail(row?.id, row?.gender, row?.age)} style={{ marginBottom: "10px", backgroundColor: '#17a2b8', borderColor: '#17a2b8' }}>
                                     <FaSave style={{ marginRight: '8px' }} />
                                     Save
                                   </button>

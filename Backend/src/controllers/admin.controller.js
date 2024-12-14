@@ -25,4 +25,12 @@ Controller.adminGetImageDetails = async (req, res, next) => {
   } catch (error) {
     return next(error);
   }
-}
+};
+
+Controller.adminEditImageDetails = async (req, res, next) => {
+  try {
+    await MediaService.adminEditImageDetails(req, res, next);
+  } catch (error) {
+    return next(error);
+  }
+};
