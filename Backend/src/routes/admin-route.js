@@ -1,5 +1,6 @@
 const express = require('express');
-const multer = require('multer');
+const validate = require('../validation/validator');
+const { MediaValidator } = require('../validation/index');
 
 function addRoutes(router, middleware, controllers) {
   router.get(
@@ -12,6 +13,13 @@ function addRoutes(router, middleware, controllers) {
     '/images/:image_id',
     middleware.adminAuthorizer,
     controllers.adminController.adminGetImageDetails
+  );
+
+  router.put(
+    '/images/:image_detail_id',
+    validate([MediaValidator.EditImageDetailsValidator]),
+    middleware.adminAuthorizer,
+    controllers.adminController.adminEditImageDetails
   );
 
   router.get(
