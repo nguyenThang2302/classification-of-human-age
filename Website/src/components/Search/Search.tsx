@@ -3,6 +3,7 @@ import "../Search/Search.css";
 import { FaChevronLeft, FaChevronRight, FaEye, FaSearch, FaSyncAlt } from "react-icons/fa";
 import { searchImage } from "@/services/media/searchImage";
 import { format } from 'date-fns';
+import { getListMail } from "@/services/user/getListMail";
 
 type Image = {
   id: number;
@@ -12,9 +13,14 @@ type Image = {
   created_at: string;
 };
 
+type Email = {
+  email: string;
+};
+
 function Search() {
   const [currentPage, setCurrentPage] = useState(1);
   const [data, setData] = useState<Image[]>([]);
+  const [emailData, setEmailData] = useState<Email[]>([]);
   const [rowsPerPage] = useState(10);
   const [email, setEmail] = useState("");
   const [date, setDate] = useState("");
@@ -50,6 +56,17 @@ function Search() {
     }
   }
 
+  const fetDataEmail = async () => {
+    try {
+      const response = await getListMail();
+      console.log(response);
+      setEmailData(response);
+    } catch (error) {
+      console.error("Error fetching mail list", error);
+      throw error;
+    }
+  };
+
   const handleSearch = async () => {
     try {
       setIsSearching(true);
@@ -66,17 +83,26 @@ function Search() {
     fetchData(currentPage);
   }, [currentPage]);
 
+  useEffect(() => {
+    fetDataEmail();
+  }, []);
+
   return (
     <div>
       <header className="header">
         <div className="search-container">
-          <input
-            type="email"
-            placeholder="Enter search email"
-            className="input-email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+          <label htmlFor="dropdown">Choose an option email:</label>
+          <select id="dropdown" value={email} onChange={(e) => setEmail(e.target.value)}>
+            <option value="" disabled>
+              -- Select an option --
+            </option>
+            {emailData.map((mail) => (
+              <option key={mail.email} value={mail.email}>
+                {mail.email}
+              </option>
+            ))}
+          </select>
+          <label htmlFor="dropdown">Choose an option date:</label>
           <input
             type="date"
             className="input-date"
