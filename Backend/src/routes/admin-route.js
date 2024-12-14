@@ -9,6 +9,12 @@ function addRoutes(router, middleware, controllers) {
   );
 
   router.get(
+    '/images/:image_id',
+    middleware.adminAuthorizer,
+    controllers.adminController.adminGetImageDetails
+  );
+
+  router.get(
     '/mails',
     middleware.adminAuthorizer,
     controllers.adminController.getListMail
