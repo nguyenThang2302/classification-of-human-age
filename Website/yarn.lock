@@ -2673,6 +2673,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/react-modal@npm:^3.16.3":
+  version: 3.16.3
+  resolution: "@types/react-modal@npm:3.16.3"
+  dependencies:
+    "@types/react": "*"
+  checksum: 53c92dfbe46aae6f4ca4d96a166fd69a4b8dc539c5e8f755086dd1471656924ca6dd0a179be746c634686a0073aef67bb9615ee8600d9536cc1521b738e48453
+  languageName: node
+  linkType: hard
+
+"@types/react@npm:*":
+  version: 19.0.1
+  resolution: "@types/react@npm:19.0.1"
+  dependencies:
+    csstype: ^3.0.2
+  checksum: e5e05cdf5fc53804e94548ca4e139102fffaab95d4c19be821d30d81dbab75ca3e30b72f2e2e750b90fcb535058cb694c4403402f14eb8a19a1282629c8222d8
+  languageName: node
+  linkType: hard
+
 "@types/react@npm:^18, @types/react@npm:^18.3.12":
   version: 18.3.14
   resolution: "@types/react@npm:18.3.14"
@@ -4584,6 +4602,13 @@ __metadata:
     signal-exit: ^4.1.0
     strip-final-newline: ^3.0.0
   checksum: cac1bf86589d1d9b73bdc5dda65c52012d1a9619c44c526891956745f7b366ca2603d29fe3f7460bacc2b48c6eab5d6a4f7afe0534b31473d3708d1265545e1f
+  languageName: node
+  linkType: hard
+
+"exenv@npm:^1.2.0":
+  version: 1.2.2
+  resolution: "exenv@npm:1.2.2"
+  checksum: a894f3b60ab8419e0b6eec99c690a009c8276b4c90655ccaf7d28faba2de3a6b93b3d92210f9dc5efd36058d44f04098f6bbccef99859151104bfd49939904dc
   languageName: node
   linkType: hard
 
@@ -7757,7 +7782,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.8.1":
+"prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -7890,6 +7915,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-lifecycles-compat@npm:^3.0.0":
+  version: 3.0.4
+  resolution: "react-lifecycles-compat@npm:3.0.4"
+  checksum: a904b0fc0a8eeb15a148c9feb7bc17cec7ef96e71188280061fc340043fd6d8ee3ff233381f0e8f95c1cf926210b2c4a31f38182c8f35ac55057e453d6df204f
+  languageName: node
+  linkType: hard
+
+"react-modal@npm:^3.16.1":
+  version: 3.16.1
+  resolution: "react-modal@npm:3.16.1"
+  dependencies:
+    exenv: ^1.2.0
+    prop-types: ^15.7.2
+    react-lifecycles-compat: ^3.0.0
+    warning: ^4.0.3
+  peerDependencies:
+    react: ^0.14.0 || ^15.0.0 || ^16 || ^17 || ^18
+    react-dom: ^0.14.0 || ^15.0.0 || ^16 || ^17 || ^18
+  checksum: 978936e9320fad839c039b9ee4de55d40888156cb40e093615d6fbc2ff07139d5db06f14782cb7767f780bd5fb57956778669426c535ebc0068a7a03882c7e75
+  languageName: node
+  linkType: hard
+
 "react-popper@npm:2.3.0":
   version: 2.3.0
   resolution: "react-popper@npm:2.3.0"
@@ -7969,6 +8016,7 @@ __metadata:
     "@types/lodash": ^4.17.13
     "@types/react": ^18.3.12
     "@types/react-dom": ^18.3.1
+    "@types/react-modal": ^3.16.3
     "@typescript-eslint/eslint-plugin": ^5.62.0
     "@typescript-eslint/parser": ^5.62.0
     "@vitejs/plugin-react": ^4.3.4
@@ -7995,6 +8043,7 @@ __metadata:
     react-error-boundary: ^4.1.2
     react-hook-form: ^7.54.0
     react-icons: ^5.4.0
+    react-modal: ^3.16.1
     react-router-dom: ^6.27.0
     react-toastify: ^10.0.6
     typescript: ^5.7.2
@@ -9352,7 +9401,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"warning@npm:^4.0.2":
+"warning@npm:^4.0.2, warning@npm:^4.0.3":
   version: 4.0.3
   resolution: "warning@npm:4.0.3"
   dependencies:

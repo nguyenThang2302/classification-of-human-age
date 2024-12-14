@@ -17,4 +17,12 @@ Controller.getListMail = async (req, res, next) => {
   } catch (error) {
     return next(error);
   }
+};
+
+Controller.adminGetImageDetails = async (req, res, next) => {
+  try {
+    await MediaService.adminGetImageDetails(req, res, next);
+  } catch (error) {
+    return next(error);
+  }
 }
