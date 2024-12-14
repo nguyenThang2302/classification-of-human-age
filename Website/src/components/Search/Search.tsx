@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../Search/Search.css";
 import { FaChevronLeft, FaChevronRight, FaEye, FaSearch, FaSyncAlt } from "react-icons/fa";
 import { searchImage } from "@/services/media/searchImage";
@@ -39,6 +39,17 @@ function Search() {
     }
   };
 
+  const fetchData = async (page: any) => {
+    try {
+      const offset = page;
+      const response = await searchImage(offset, rowsPerPage, email, date);
+      setData(response);
+    } catch (error) {
+      console.error("Error fetching history image details:", error);
+      throw error;
+    }
+  }
+
   const handleSearch = async () => {
     try {
       setIsSearching(true);
@@ -50,6 +61,10 @@ function Search() {
       throw error;
     }
   };
+
+  useEffect(() => {
+    fetchData(currentPage);
+  }, [currentPage]);
 
   return (
     <div>
