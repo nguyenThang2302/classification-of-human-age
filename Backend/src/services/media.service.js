@@ -3,9 +3,9 @@ const { MediaMapper } = require('../mappers/index');
 const Image = require('../database/entities/image.entity');
 const UserImage = require('../database/entities/user_image.entity');
 const { ok } = require('../helpers/response.helper');
-const config = require('../config/config');
 const ImageDetails = require('../database/entities/image_details.entity');
 const _ = require('lodash');
+const { BadRequestError } = require('../errors');
 const MediaService = module.exports;
 
 const imageRepository = AppDataSource.getRepository(Image);
@@ -164,6 +164,30 @@ MediaService.adminGetImageDetails = async (req, res, next) => {
       .getMany();
 
     return ok(req, res, MediaMapper.toImageDetailResponse(imageDetails));
+  } catch (error) {
+    return next(error);
+  }
+};
+
+MediaService.adminEditImageDetails = async (req, res, next) => {
+  try {
+    const { image_id, gender, age } = req.body;
+    const imageDetailsID = parseInt(req.params.image_detail_id);
+    const imageDetails = await imageDetailRepository.createQueryBuilder('image_details')
+      .innerJoin('image_details.image', 'images', 'images.id = :image_id', { image_id })
+      .select()
+      .where('image_details.id = :image_details_id', { image_details_id: imageDetailsID })
+      .getOne();
+
+    if (!imageDetails) {
+      return next(new BadRequestError('Image not found'));
+    }
+
+    await imageDetailRepository.update({ id: imageDetailsID }, {
+      gender,
+      age
+    });
+    return ok(req, res, MediaMapper.toEditImageDetailResponse());
   } catch (error) {
     return next(error);
   }
