@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import React, { useState } from 'react';
 import '../SideBar/SideBar.css';
-import { FaBook, FaAngleDoubleDown, FaAngleDoubleUp, FaSignOutAlt, FaUser, FaSearch, FaUpload } from 'react-icons/fa';
+import { FaBook, FaAngleDoubleDown, FaAngleDoubleUp, FaSignOutAlt, FaUser, FaSearch, FaUpload, FaHistory } from 'react-icons/fa';
 
 const SidebarAdmin = ({ onMenuClick }: any) => {
   const [isSubMenuVisible, setIsSubMenuVisible] = useState(false);
@@ -17,6 +17,10 @@ const SidebarAdmin = ({ onMenuClick }: any) => {
       <button onClick={() => onMenuClick('uploads')}>
         <FaUpload style={{ marginRight: '8px' }} />
         Convert
+      </button>
+      <button onClick={() => onMenuClick('history')}>
+        <FaHistory style={{ marginRight: '8px' }} />
+        History
       </button>
       <button onClick={() => onClickManagementItem()}>
         <FaBook style={{ marginRight: '8px' }} />
