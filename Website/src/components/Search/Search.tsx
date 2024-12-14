@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "../Search/Search.css";
-import { FaChevronLeft, FaChevronRight, FaEye, FaSearch, FaSyncAlt } from "react-icons/fa";
+import { FaChevronLeft, FaChevronRight, FaEye, FaSearch, FaSyncAlt, FaSave } from "react-icons/fa";
+import { IoCloseCircle } from "react-icons/io5";
 import { searchImage } from "@/services/media/searchImage";
 import { format } from 'date-fns';
 import { getListMail } from "@/services/user/getListMail";
+import { getImageDetail } from "@/services/admin/getImageDetail";
+import { FaLongArrowAltRight } from "react-icons/fa";
 
 type Image = {
   id: number;
@@ -13,14 +16,34 @@ type Image = {
   created_at: string;
 };
 
+type ImageDetails = {
+  id: number;
+  image_id: number;
+  secure_url: string;
+  gender: number;
+  age: number;
+};
+
 type Email = {
   email: string;
 };
 
 function Search() {
+  const genderList = [
+    {
+      id: 0,
+      name: 'Male'
+    },
+    {
+      id: 1,
+      name: 'Female'
+    }
+  ];
+
   const [currentPage, setCurrentPage] = useState(1);
   const [data, setData] = useState<Image[]>([]);
   const [emailData, setEmailData] = useState<Email[]>([]);
+  const [dataImageDetails, setDataImageDetails] = useState<ImageDetails[]>([]);
   const [rowsPerPage] = useState(10);
   const [email, setEmail] = useState("");
   const [date, setDate] = useState("");
@@ -28,6 +51,24 @@ function Search() {
   const [isModalOpenOrigin, setIsModalOpenOrigin] = useState<boolean>(false);
   const [isModalOpenPredict, setIsModalOpenPredict] = useState<boolean>(false);
   const [selectedImage, setSelectedImage] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedChangeGender, setSelectedChangeGender] = useState("");
+  const [selectedChangeAge, setSelectedChangeAge] = useState("");
+
+  const openModal = async (imageId: any) => {
+    try {
+      setIsModalOpen(true);
+      const response = await getImageDetail(imageId);
+      setDataImageDetails(response);
+    } catch (error) {
+      console.error("Error fetching image details:", error);
+      throw error;
+    }
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   const handleImageOriginClick = (imageUrl: any) => {
     setSelectedImage(imageUrl);
@@ -59,7 +100,6 @@ function Search() {
   const fetDataEmail = async () => {
     try {
       const response = await getListMail();
-      console.log(response);
       setEmailData(response);
     } catch (error) {
       console.error("Error fetching mail list", error);
@@ -241,9 +281,108 @@ function Search() {
                   </td>
                   <td>{format(new Date(row.created_at), 'yyyy-MM-dd HH:mm')}</td>
                   <td>
-                    <a href={`history/image-details/${row.id}`}>
+                    <button className="btn-search" onClick={() => { openModal(row.id) }} style={{ backgroundColor: '#28a745', borderColor: '#28a745' }}>
                       <FaEye />
-                    </a>
+                    </button>
+                    {isModalOpen && (
+                      <div
+                        style={{
+                          height: "80%",
+                          width: "80%",
+                          position: "absolute",
+                          top: "50%",
+                          left: "50%",
+                          transform: "translate(-50%, -50%)",
+                          backgroundColor: "#fff",
+                          padding: "20px",
+                          border: "1px solid #ccc",
+                          borderRadius: "8px",
+                          zIndex: 10,
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between"
+                          }}
+                        >
+                          <h2>Image details</h2>
+                          <button className="btn-search" onClick={closeModal} style={{ marginBottom: "10px", backgroundColor: '#dc3545', borderColor: '#dc3545' }}>
+                            <IoCloseCircle style={{ marginRight: '8px' }} />
+                            Close
+                          </button>
+                        </div>
+                        <table className="custom-table">
+                          <thead>
+                            <tr>
+                              <th>ID</th>
+                              <th>Face</th>
+                              <th>Gender</th>
+                              <th>Age</th>
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {dataImageDetails.map((row) => (
+                              <tr key={row.id}>
+                                <td>#{row.id}</td>
+                                <td>
+                                  <div
+                                    style={{
+                                      width: '50px',
+                                      height: '50px',
+                                      border: '2px solid #007BFF',
+                                      borderRadius: '10px',
+                                      margin: '20px auto 0',
+                                      backgroundSize: 'cover',
+                                      backgroundPosition: 'center',
+                                      backgroundImage: `url(${row.secure_url})`,
+                                      cursor: 'pointer',
+                                    }}
+                                  >
+                                  </div>
+                                </td>
+                                <td>
+                                  <text>{row?.gender === 0 ? 'Male' : 'Female'}</text>
+                                  <FaLongArrowAltRight style={{ marginLeft: '8px', marginRight: '8px' }} />
+                                  <select id="dropdown" value={selectedChangeGender} onChange={(e) => setSelectedChangeGender(e.target.value)}>
+                                    <option value="" disabled>
+                                      -- Select an option --
+                                    </option>
+                                    {genderList.map((gender) => (
+                                      <option key={gender.id} value={gender.name}>
+                                        {gender.name}
+                                      </option>
+                                    ))}
+                                  </select>
+                                </td>
+                                <td>
+                                  <text>{row?.age}</text>
+                                  <FaLongArrowAltRight style={{ marginLeft: '8px', marginRight: '8px' }} />
+                                  <select id="dropdown" value={selectedChangeAge} onChange={(e) => setSelectedChangeAge(e.target.value)}>
+                                    <option value="" disabled>
+                                      -- Select an option --
+                                    </option>
+                                    {Array.from({ length: 100 }, (_, i) => (
+                                      <option key={i} value={i}>
+                                        {i}
+                                      </option>
+                                    ))}
+                                  </select>
+                                </td>
+                                <td>
+                                  <button className="btn-search" style={{ marginBottom: "10px", backgroundColor: '#17a2b8', borderColor: '#17a2b8' }}>
+                                    <FaSave style={{ marginRight: '8px' }} />
+                                    Save
+                                  </button>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    )}
                   </td>
                 </tr>
               ))}

@@ -153,3 +153,18 @@ MediaService.getSearchImagesHistory = async (req, res, next) => {
   };
   return ok(req, res, MediaMapper.toImagesHistoryResponse(images, paginations));
 };
+
+MediaService.adminGetImageDetails = async (req, res, next) => {
+  try {
+    const imageID = parseInt(req.params.image_id);
+    const imageDetails = await imageDetailRepository.createQueryBuilder('image_details')
+      .innerJoin('image_details.image', 'images', 'images.id = :image_id', { image_id: imageID })
+      .select()
+      .where('image_details.image_id = :image_id', { image_id: imageID })
+      .getMany();
+
+    return ok(req, res, MediaMapper.toImageDetailResponse(imageDetails));
+  } catch (error) {
+    return next(error);
+  }
+};
