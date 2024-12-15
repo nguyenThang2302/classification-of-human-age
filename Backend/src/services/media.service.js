@@ -192,3 +192,45 @@ MediaService.adminEditImageDetails = async (req, res, next) => {
     return next(error);
   }
 };
+
+MediaService.getAgeFolders = async (req, res, next) => {
+  try {
+    const ageFolders = await imageDetailRepository.createQueryBuilder('image_details')
+      .select('DISTINCT age')
+      .orderBy('age', 'ASC')
+      .getRawMany();
+    return ok(req, res, MediaMapper.toAgeFoldersResponse(ageFolders));
+  } catch (error) {
+    return next(error);
+  }
+};
+
+MediaService.getAgeImages = async (req, res, next) => {
+  try {
+    const { age } = req.query;
+    const ageImages = await imageDetailRepository.createQueryBuilder('image_details')
+      .innerJoin('image_details.image', 'images')
+      .select()
+      .where('image_details.age = :age', { age })
+      .getMany();
+
+    return ok(req, res, MediaMapper.toAgeImagesResponse(ageImages));
+  } catch (error) {
+    return next(error);
+  }
+};
+
+MediaService.getGenderImages = async (req, res, next) => {
+  try {
+    const { gender } = req.query;
+    const genderImages = await imageDetailRepository.createQueryBuilder('image_details')
+      .innerJoin('image_details.image', 'images')
+      .select()
+      .where('image_details.gender = :gender', { gender })
+      .getMany();
+
+    return ok(req, res, MediaMapper.toGenderImagesResponse(genderImages));
+  } catch (error) {
+    return next(error);
+  }
+};

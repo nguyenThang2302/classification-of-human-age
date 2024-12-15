@@ -6,3 +6,6 @@ MediaMapper.toImageDetailResponse = (data) => ({ items: data });
 MediaMapper.toEditImageDetailResponse = () => ({ data: {
   message: 'Success'
 } });
+MediaMapper.toAgeFoldersResponse = (data) => ({ items: data });
+MediaMapper.toAgeImagesResponse = (data) => ({ items: data });
+MediaMapper.toGenderImagesResponse = (data) => ({ items: data });
