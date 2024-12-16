@@ -23,6 +23,24 @@ function addRoutes(router, middleware, controllers) {
   );
 
   router.get(
+    '/age-folders',
+    middleware.adminAuthorizer,
+    controllers.adminController.getAgeFolders
+  );
+
+  router.get(
+    '/age-images',
+    middleware.adminAuthorizer,
+    controllers.adminController.getAgeImages
+  );
+
+  router.get(
+    '/gender-images',
+    middleware.adminAuthorizer,
+    controllers.adminController.getGenderImages
+  );
+
+  router.get(
     '/mails',
     middleware.adminAuthorizer,
     controllers.adminController.getListMail

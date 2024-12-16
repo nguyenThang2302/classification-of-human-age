@@ -4,7 +4,7 @@ import { Home, Login, Metrics, Register, Users, DashboardUser, DashboardAdmin, H
 import { PrivateRoute } from "../PrivateRoute";
 import { PublicRoute } from "../PublicRoute";
 import { useSession } from "@/hooks";
-import { Sidebar, Uploads, History, Profile, SidebarAdmin } from "@/components";
+import { Sidebar, Uploads, History, Profile, SidebarAdmin, Download } from "@/components";
 import { useState } from "react";
 
 function Router() {
@@ -16,7 +16,7 @@ function Router() {
     USERS_PATH,
     USER_PATH,
     DASHBOARD_PATH,
-    HISTORYIMAGEDETAIL_PATH
+    HISTORYIMAGEDETAIL_PATH,
   } = useRoutePaths();
 
   const { isAdmin, isAuthenticated } = useSession();
@@ -34,6 +34,8 @@ function Router() {
       return <Profile />;
     } else if (selectedSection === 'history-image-details') {
       return <HistoryImageDetail />;
+    } else if (selectedSection === 'images-age') {
+      return <Download />;
     }
   };
 
@@ -66,7 +68,7 @@ function Router() {
         element={
           <PrivateRoute redirectTo={LOGIN_PATH}>
             <div className="dashboard">
-              {isAdmin ? <SidebarAdmin onMenuClick={setSelectedSection} /> : <Sidebar onMenuClick={setSelectedSection} /> }
+              {isAdmin ? <SidebarAdmin onMenuClick={setSelectedSection} /> : <Sidebar onMenuClick={setSelectedSection} />}
               <div className="content">{renderSection()}</div>
             </div>
           </PrivateRoute>

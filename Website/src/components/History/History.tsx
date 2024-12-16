@@ -4,6 +4,7 @@ import { fetchHistoryImages } from "@/services/media/getHistoryImageList";
 import { toast } from "react-toastify";
 import { FaEye, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { format } from 'date-fns';
+import { useNavigate } from "react-router-dom";
 
 type Image = {
   id: number;
@@ -22,6 +23,7 @@ const History = () => {
   const [isModalOpenOrigin, setIsModalOpenOrigin] = useState<boolean>(false);
   const [isModalOpenPredict, setIsModalOpenPredict] = useState<boolean>(false);
   const [selectedImage, setSelectedImage] = useState("");
+  const navigate = useNavigate();
 
   const handleImageOriginClick = (imageUrl: any) => {
     setSelectedImage(imageUrl);
@@ -46,6 +48,10 @@ const History = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const redirectToImageDetailsPage = (id: any) => {
+    navigate(`/history/image-details/${id}`);
   };
 
   useEffect(() => {
@@ -186,7 +192,7 @@ const History = () => {
                   </td>
                   <td>{format(new Date(row.created_at), 'yyyy-MM-dd HH:mm')}</td>
                   <td>
-                    <a href={`/history/image-details/${row.id}`}>
+                    <a href="#" onClick={() => redirectToImageDetailsPage(row.id)}>
                       <FaEye />
                     </a>
                   </td>
