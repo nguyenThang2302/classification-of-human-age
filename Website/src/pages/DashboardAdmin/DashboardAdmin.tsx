@@ -1,9 +1,11 @@
 /* eslint-disable prettier/prettier */
 import React, { useState } from 'react';
-import { Uploads, History, SidebarAdmin, Profile, Search } from '@/components';
+import { Uploads, History, SidebarAdmin, Profile, Search, Download } from '@/components';
+import { useNavigate } from "react-router-dom";
 
 function DashboardAdmin() {
   const [selectedSection, setSelectedSection] = useState('uploads');
+  const navigate = useNavigate();
 
   const renderSection = () => {
     if (selectedSection === 'uploads') {
@@ -17,6 +19,9 @@ function DashboardAdmin() {
       return <Profile />;
     } else if (selectedSection === 'search-image') {
       return <Search />;
+    } else if (selectedSection === 'download-image') {
+      // navigate('/download-images');
+      return <Download />;
     }
   };
 

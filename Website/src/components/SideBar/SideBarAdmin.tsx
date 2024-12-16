@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import React, { useState } from 'react';
 import '../SideBar/SideBar.css';
-import { FaBook, FaAngleDoubleDown, FaAngleDoubleUp, FaSignOutAlt, FaUser, FaSearch, FaUpload, FaHistory } from 'react-icons/fa';
+import { FaBook, FaAngleDoubleDown, FaAngleDoubleUp, FaSignOutAlt, FaUser, FaSearch, FaUpload, FaHistory, FaDownload } from 'react-icons/fa';
 
 const SidebarAdmin = ({ onMenuClick }: any) => {
   const [isSubMenuVisible, setIsSubMenuVisible] = useState(false);
@@ -34,6 +34,12 @@ const SidebarAdmin = ({ onMenuClick }: any) => {
               <button onClick={() => onMenuClick('search-image')}>
                 <FaSearch style={{ marginRight: '8px' }} />
                 Search image
+              </button>
+            </li>
+            <li>
+              <button onClick={() => onMenuClick('download-image')}>
+                <FaDownload style={{ marginRight: '8px' }} />
+                Download images
               </button>
             </li>
           </ul>
