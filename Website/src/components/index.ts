@@ -7,3 +7,4 @@ export * from './SideBar';
 export * from './Upload';
 export * from './Profile';
 export * from './Search';
+export * from './Downloads';
