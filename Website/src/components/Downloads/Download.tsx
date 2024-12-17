@@ -6,6 +6,7 @@ import '../Downloads/Download.css';
 import { IoCloseCircle } from "react-icons/io5";
 import { getImagesFilterByAge } from "@/services/media/getImagesFilterByAge";
 import { getImagesFilterByGender } from "@/services/media/getImagesFilterByGender";
+import { saveAs } from 'file-saver';
 
 type AgeFolder = {
   age: number;
@@ -30,6 +31,78 @@ function Download() {
   const [genderImages, setGenderImages] = useState<ImageFile[]>([]);
   const [isShowImagesFolderAge, setShowImagesFolderAge] = useState<boolean>(false);
   const [isShowImagesFolderGender, setShowImagesFolderGender] = useState<boolean>(false);
+
+  const handleDownloadImage = async (image: ImageFile) => {
+    try {
+      if ('showDirectoryPicker' in window) {
+        const folderHandle = await window.showDirectoryPicker();
+        const fileName = `${image['secure_url'].split('/').pop().split('.')[0]}.jpg`;
+        const fileHandle = await folderHandle.getFileHandle(fileName, { create: true });
+        const fileStream = await fileHandle.createWritable();
+        const imageBlob = await fetch(image.secure_url).then(res => res.blob());
+        await fileStream.write(imageBlob);
+        await fileStream.close();
+        toast.success('Images downloaded successfully');
+      } else {
+        saveAs(image.secure_url, `${image['secure_url'].split('/').pop().split('.')[0]}.jpg`);
+        toast.success('Images downloaded successfully');
+      }
+    } catch (error) {
+      toast.error('Error downloading image');
+    }
+  };
+
+  const handleDownloadFolder = async (folder: AgeFolder | GenderFolder) => {
+    try {
+      if ('showDirectoryPicker' in window) {
+        const folderHandle = await window.showDirectoryPicker();
+
+        if (folder.age) {
+          const response = await getImagesFilterByAge(folder.age);
+          for (const image of response) {
+            const fileName = `${image['secure_url'].split('/').pop().split('.')[0]}.jpg`;
+            const fileHandle = await folderHandle.getFileHandle(fileName, { create: true });
+
+            const fileStream = await fileHandle.createWritable();
+            const imageBlob = await fetch(image.secure_url).then(res => res.blob());
+            await fileStream.write(imageBlob);
+            await fileStream.close();
+          }
+          toast.success('Images downloaded successfully');
+        } else if (folder.gender) {
+          const gender = folder.gender === 'male' ? 0 : 1;
+          const response = await getImagesFilterByGender(gender);
+          for (const image of response) {
+            const fileName = `${image['secure_url'].split('/').pop().split('.')[0]}.jpg`;
+            const fileHandle = await folderHandle.getFileHandle(fileName, { create: true });
+
+            const fileStream = await fileHandle.createWritable();
+            const imageBlob = await fetch(image.secure_url).then(res => res.blob());
+            await fileStream.write(imageBlob);
+            await fileStream.close();
+          }
+          toast.success('Images downloaded successfully');
+        }
+      } else {
+        if (folder.age) {
+          const response = await getImagesFilterByAge(folder.age);
+          response.forEach(async (image) => {
+            saveAs(image.secure_url, `${image['secure_url'].split('/').pop().split('.')[0]}.jpg`);
+          });
+          toast.success('Images downloaded successfully');
+        } else if (folder.gender) {
+          const gender = folder.gender === 'male' ? 0 : 1;
+          const response = await getImagesFilterByGender(gender);
+          response.forEach(async (image) => {
+            saveAs(image.secure_url, `${image['secure_url'].split('/').pop().split('.')[0]}.jpg`);
+          });
+          toast.success('Images downloaded successfully');
+        }
+      }
+    } catch (error) {
+      toast.error('Error downloading images');
+    }
+  };
 
   const handleFilter = async () => {
     setAgeFolders([]);
@@ -128,6 +201,7 @@ function Download() {
                     {folder.age}
                     <a href="" onClick={(event) => {
                       event.preventDefault();
+                      handleDownloadFolder(folder);
                     }}><FaDownload style={{ marginRight: '20px', float: 'right' }} /></a>
                   </td>
                 </tr>
@@ -168,13 +242,14 @@ function Download() {
                 <tbody>
                   {ageImages.map((image) => (
                     <tr key={image.id}>
-                      <td style={{ textAlign: 'start', paddingLeft: '30px', position:'relative' }}>
+                      <td style={{ textAlign: 'start', paddingLeft: '30px', position: 'relative' }}>
                         <a href="" onClick={(event) => {
                           event.preventDefault();
                         }}><FaImage style={{ marginRight: '20px' }} /></a>
                         {`${image['secure_url'].split('/').pop().split('.')[0]}.jpg`}
                         <a href="" onClick={(event) => {
                           event.preventDefault();
+                          handleDownloadImage(image);
                         }}><FaDownload style={{ marginRight: '20px', float: 'right' }} /></a>
                       </td>
                     </tr>
@@ -200,6 +275,7 @@ function Download() {
                       {folder.gender}
                       <a href="" onClick={(event) => {
                         event.preventDefault();
+                        handleDownloadFolder(folder);
                       }}><FaDownload style={{ marginRight: '20px', float: 'right' }} /></a>
                     </td>
                   </tr>
@@ -245,6 +321,10 @@ function Download() {
                             event.preventDefault();
                           }}><FaImage style={{ marginRight: '20px' }} /></a>
                           {`${image['secure_url'].split('/').pop().split('.')[0]}.jpg`}
+                          <a href="" onClick={(event) => {
+                            event.preventDefault();
+                            handleDownloadImage(image);
+                          }}><FaDownload style={{ marginRight: '20px', float: 'right' }} /></a>
                         </td>
                       </tr>
                     ))}
