@@ -70,6 +70,7 @@ function AuthProvider(props: Props) {
           setUserProfile({
             name: response.data.data.name,
             email: response.data.data.email,
+            is_2fa_enabled: response.data.data.is_2fa_enabled,
           });
         }
       } catch (error) {
