@@ -5,6 +5,8 @@ import { toast } from "react-toastify";
 import { FaEye, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { format } from 'date-fns';
 import { useNavigate } from "react-router-dom";
+import { getHistoryImageDetail } from "@/services/media/getHistoryImageDetail";
+import { IoCloseCircle } from "react-icons/io5";
 
 type Image = {
   id: number;
@@ -12,6 +14,13 @@ type Image = {
   origin_url: string;
   predicted_url: string;
   created_at: string;
+};
+
+type ImageDetails = {
+  id: number;
+  secure_url: string;
+  gender: number;
+  age: number;
 };
 
 const History = () => {
@@ -22,6 +31,8 @@ const History = () => {
   const [error, setError] = useState(null);
   const [isModalOpenOrigin, setIsModalOpenOrigin] = useState<boolean>(false);
   const [isModalOpenPredict, setIsModalOpenPredict] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [dataImageDetails, setDataImageDetails] = useState<ImageDetails[]>([]);
   const [selectedImage, setSelectedImage] = useState("");
   const navigate = useNavigate();
 
@@ -33,6 +44,17 @@ const History = () => {
   const handleImagePredictClick = (imageUrl: any) => {
     setSelectedImage(imageUrl);
     setIsModalOpenPredict(true);
+  };
+
+  const openModal = async (imageId: any) => {
+    try {
+      setIsModalOpen(true);
+      const response = await getHistoryImageDetail(imageId);
+      setDataImageDetails(response);
+    } catch (error) {
+      console.error("Error fetching image details:", error);
+      throw error;
+    }
   };
 
   const fetchData = async (page: any) => {
@@ -63,6 +85,12 @@ const History = () => {
       setCurrentPage(newPage);
     }
   };
+
+  const closeModal = () => {
+    setDataImageDetails([]);
+    setIsModalOpen(false);
+  };
+
 
   return (
     <div className="table-container">
@@ -192,14 +220,89 @@ const History = () => {
                   </td>
                   <td>{format(new Date(row.created_at), 'yyyy-MM-dd HH:mm')}</td>
                   <td>
-                    <a href="#" onClick={() => redirectToImageDetailsPage(row.id)}>
+                    {/* <a href="#" onClick={() => redirectToImageDetailsPage(row.id)}>
                       <FaEye />
-                    </a>
+                    </a> */}
+                    <button className="btn-search" onClick={() => { openModal(row.id) }} style={{ backgroundColor: '#28a745', borderColor: '#28a745' }}>
+                      <FaEye />
+                    </button>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
+          {isModalOpen && (
+            <div
+              style={{
+                height: "80%",
+                width: "80%",
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                backgroundColor: "#fff",
+                padding: "20px",
+                border: "1px solid #ccc",
+                borderRadius: "8px",
+                zIndex: 10,
+                overflow: "hidden",
+                overflowY: "auto",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between"
+                }}
+              >
+                <h2>Image details</h2>
+                <button className="btn-search" onClick={closeModal} style={{ marginBottom: "10px", backgroundColor: '#dc3545', borderColor: '#dc3545' }}>
+                  <IoCloseCircle style={{ marginRight: '8px' }} />
+                  Close
+                </button>
+              </div>
+              <table className="custom-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Face</th>
+                    <th>Gender</th>
+                    <th>Age</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {dataImageDetails.map((row) => (
+                    <tr key={row.id}>
+                      <td>#{row.id}</td>
+                      <td>
+                        <div
+                          style={{
+                            width: '50px',
+                            height: '50px',
+                            border: '2px solid #007BFF',
+                            borderRadius: '10px',
+                            margin: '20px auto 0',
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center',
+                            backgroundImage: `url(${row.secure_url})`,
+                            cursor: 'pointer',
+                          }}
+                        >
+                        </div>
+                      </td>
+                      <td>
+                        <p>{(row?.gender === 0 ? 'Male' : 'Female')}</p>
+                      </td>
+                      <td>
+                        <p>{row.age}</p>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
           <div className="pagination">
             <button
               onClick={() => handlePageChange(currentPage - 1)}

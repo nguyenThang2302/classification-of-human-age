@@ -32,7 +32,6 @@ const HistoryImageDetail = () => {
     try {
       const offset = page;
       const response = await getHistoryImageDetail(image_id);
-      console.log(response);
       setData(response);
     } catch (err) {
       toast.error("Failed to fetch history data");

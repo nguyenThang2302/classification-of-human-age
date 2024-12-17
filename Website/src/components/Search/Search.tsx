@@ -358,6 +358,8 @@ function Search() {
                           border: "1px solid #ccc",
                           borderRadius: "8px",
                           zIndex: 10,
+                          overflow: "hidden",
+                          overflowY: "auto",
                         }}
                       >
                         <div

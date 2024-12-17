@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Uploads, History, SidebarAdmin, Profile, Search, Download } from '@/components';
 import { useNavigate } from "react-router-dom";
+import Setting from '@/components/Setting/Setting';
 
 function DashboardAdmin() {
   const [selectedSection, setSelectedSection] = useState('uploads');
@@ -20,8 +21,9 @@ function DashboardAdmin() {
     } else if (selectedSection === 'search-image') {
       return <Search />;
     } else if (selectedSection === 'download-image') {
-      // navigate('/download-images');
       return <Download />;
+    } else if (selectedSection === 'setting') {
+      return <Setting />;
     }
   };
 
