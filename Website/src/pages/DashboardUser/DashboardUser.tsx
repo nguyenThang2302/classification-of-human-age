@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import React, { useState } from 'react';
 import { Uploads, History, Sidebar, Profile } from '@/components';
+import Setting from '@/components/Setting/Setting';
 
 function DashboardUser() {
   const [selectedSection, setSelectedSection] = useState('uploads');
@@ -15,6 +16,8 @@ function DashboardUser() {
       window.location.href = '/login';
     } else if (selectedSection === 'profile') {
       return <Profile />;
+    } else if (selectedSection === 'setting') {
+      return <Setting />;
     }
   };
 

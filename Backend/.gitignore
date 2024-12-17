@@ -50,6 +50,8 @@ local.properties
 # PDT-specific
 .buildpath
 
+/.yarn
+
 ######################
 # Intellij
 ######################

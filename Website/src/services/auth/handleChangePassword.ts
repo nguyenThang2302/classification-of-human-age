@@ -1,5 +1,4 @@
 import { instance } from '../instance';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface ChangePasswordRequest {
     current_password: string;
@@ -9,7 +8,7 @@ interface ChangePasswordRequest {
 
 export const handleChangePassword = async (changePasswordRequest: ChangePasswordRequest) => {
     try {
-        const accessToken = await AsyncStorage.getItem('access_token');
+        const accessToken = localStorage.getItem('access_token');
         const response = await instance.put('auth/change-password', changePasswordRequest, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,

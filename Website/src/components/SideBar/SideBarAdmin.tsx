@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import '../SideBar/SideBar.css';
 import { FaBook, FaAngleDoubleDown, FaAngleDoubleUp, FaSignOutAlt, FaUser, FaSearch, FaUpload, FaHistory, FaDownload } from 'react-icons/fa';
+import { IoMdSettings } from 'react-icons/io';
 
 const SidebarAdmin = ({ onMenuClick }: any) => {
   const [isSubMenuVisible, setIsSubMenuVisible] = useState(false);
@@ -48,6 +49,10 @@ const SidebarAdmin = ({ onMenuClick }: any) => {
       <button onClick={() => onMenuClick('profile')}>
         <FaUser style={{ marginRight: '8px' }} />
         Profile
+      </button>
+      <button onClick={() => onMenuClick('setting')}>
+        <IoMdSettings style={{ marginRight: '8px' }} />
+        Setting
       </button>
       <button onClick={() => onMenuClick('logout')}>
         <FaSignOutAlt style={{ marginRight: '8px' }} />
