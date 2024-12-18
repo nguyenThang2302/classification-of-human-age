@@ -12,7 +12,7 @@ import {
   MDBInput,
   MDBCheckbox
 }
-from 'mdb-react-ui-kit';
+  from 'mdb-react-ui-kit';
 import './style.css';
 import { emailValidator, passwordValidator } from '../../helpers';
 import { handleLogin } from '../../services/auth';
@@ -60,19 +60,19 @@ function Login() {
       <MDBRow className='d-flex justify-content-center align-items-center h-100'>
         <MDBCol col='12'>
 
-          <MDBCard className='bg-white my-5 mx-auto' style={{borderRadius: '1rem', maxWidth: '500px'}}>
+          <MDBCard className='bg-white my-5 mx-auto' style={{ borderRadius: '1rem', maxWidth: '500px' }}>
             <MDBCardBody className='p-5 w-100 d-flex flex-column'>
 
               <h2 className="fw-bold mb-2 text-center">Sign in</h2>
               <p className="text-white-50 mb-3">Please enter your login and password!</p>
 
-              <MDBInput wrapperClass='mb-4 w-100' label='Email address' id='formControlLg' type='email' size="lg" value={email.value} onChange={(e) => setEmail({ value: e.target.value, error: '' })}/>
+              <MDBInput wrapperClass='mb-4 w-100' label='Email address' id='formControlLg' type='email' size="lg" value={email.value} onChange={(e) => setEmail({ value: e.target.value, error: '' })} />
               {email.error && (
                 <span className="error-message">
                   {email.error}
                 </span>
               )}
-              <MDBInput wrapperClass='mb-4 w-100' label='Password' id='formControlLg' type='password' size="lg" value={password.value} onChange={(e) => setPassword({ value: e.target.value, error: '' })}/>
+              <MDBInput wrapperClass='mb-4 w-100' label='Password' id='formControlLg' type='password' size="lg" value={password.value} onChange={(e) => setPassword({ value: e.target.value, error: '' })} />
               {password.error && (
                 <span className="error-message">
                   {password.error}
@@ -86,7 +86,8 @@ function Login() {
               </MDBBtn>
 
               <hr className="my-4" />
-              <p className="mb-5 pb-lg-2" style={{color: '#393f81'}}>Don't have an account? <a href="/register" style={{color: '#393f81'}}>Register here</a></p>
+              <p className="pb-lg-2" style={{ color: '#393f81' }}>Don't have an account? <a href="/register" style={{ color: '#393f81' }}>Register here</a></p>
+              <a href="/forgot-password" style={{ color: '#393f81' }}>Forgot password</a>
 
             </MDBCardBody>
           </MDBCard>
