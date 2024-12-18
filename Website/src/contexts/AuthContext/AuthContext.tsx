@@ -10,6 +10,7 @@ export type User = {
 export type UserProfile = {
   name: string;
   email: string;
+  is_2fa_enabled: boolean;
 };
 
 export type SignInCredentials = {
