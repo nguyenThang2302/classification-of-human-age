@@ -7,6 +7,7 @@ export const instance = axios.create({
   baseURL: prefixUrl,
   headers: {
     Accept: 'application/json',
+
   },
 });
 
