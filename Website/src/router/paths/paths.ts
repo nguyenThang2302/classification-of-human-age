@@ -8,6 +8,8 @@ const DASHBOARD_PATH = "/dashboard";
 const HISTORYIMAGEDETAIL_PATH = "/history/image-details/:image_id";
 const IMAGES_AGE = "/images-age";
 const VERIFY_2FA_PATH = 'verify-2fa';
+const FORGOT_PASSWORD_PATH = 'forgot-password';
+const VERIFY_FORGOT_CODE_PATH = 'verify-forgot-code';
 
 const paths = {
   ROOT_PATH,
@@ -19,7 +21,9 @@ const paths = {
   DASHBOARD_PATH,
   HISTORYIMAGEDETAIL_PATH,
   IMAGES_AGE,
-  VERIFY_2FA_PATH
+  VERIFY_2FA_PATH,
+  FORGOT_PASSWORD_PATH,
+  VERIFY_FORGOT_CODE_PATH
 } as const;
 
 export default paths;

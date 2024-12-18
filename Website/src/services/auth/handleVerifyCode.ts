@@ -1,5 +1,4 @@
 import { instance } from '../instance';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface VerifyCodeRequest {
     code: string;
@@ -9,8 +8,8 @@ interface VerifyCodeRequest {
 
 export const handleVerifyCode = async (verifyCodeRequest: VerifyCodeRequest) => {
     try {
-        const email = await AsyncStorage.getItem('forgot_email');
-        const forgotToken = await AsyncStorage.getItem('forgot_token');
+        const email = localStorage.getItem('forgot_email');
+        const forgotToken = localStorage.getItem('forgot_token');
         const requestBody = {
             email: email,
             token: forgotToken,
