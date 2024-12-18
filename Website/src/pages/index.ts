@@ -6,3 +6,4 @@ export * from "./Users";
 export * from './DashboardUser';
 export * from './DashboardAdmin';
 export * from './HistoryImageDetail';
+export * from './Verify2FA';

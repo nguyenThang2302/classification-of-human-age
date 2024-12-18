@@ -149,6 +149,7 @@ const Enable2FA = () => {
           <p>{enable2FADetails?.secret}</p>
           <input
             type='text'
+            placeholder="Enter 6-digit code"
             value={code2FA.value}
             onChange={(e) => setCode2FA({ value: e.target.value, error: '' })}>
           </input>

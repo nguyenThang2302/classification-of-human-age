@@ -42,6 +42,7 @@ function Login() {
       .then(response => {
         if (response.data.data.is_enable_2fa) {
           localStorage.setItem('temp_access_token', response.data.data.access_token);
+          navigate('/verify-2fa');
         } else {
           toast.success('Login successfully');
           localStorage.setItem('access_token', response.data.data.access_token);
