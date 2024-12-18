@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import { useRoutePaths } from "@/hooks";
-import { Home, Login, Metrics, Register, Users, DashboardUser, DashboardAdmin, HistoryImageDetail } from "@/pages";
+import { Home, Login, Metrics, Register, Users, DashboardUser, DashboardAdmin, HistoryImageDetail, Verify2FA } from "@/pages";
 import { PrivateRoute } from "../PrivateRoute";
 import { PublicRoute } from "../PublicRoute";
 import { useSession } from "@/hooks";
@@ -17,6 +17,7 @@ function Router() {
     USER_PATH,
     DASHBOARD_PATH,
     HISTORYIMAGEDETAIL_PATH,
+    VERIFY_2FA_PATH
   } = useRoutePaths();
 
   const { isAdmin, isAuthenticated } = useSession();
@@ -60,6 +61,19 @@ function Router() {
           <PrivateRoute redirectTo={LOGIN_PATH}>
             {isAdmin ? <DashboardAdmin /> : <DashboardUser />}
           </PrivateRoute>
+        }
+      />
+
+      <Route
+        path={VERIFY_2FA_PATH}
+        element={
+          <PublicRoute>
+            {isAuthenticated ? (
+              isAdmin ? <DashboardAdmin /> : <DashboardUser />
+            ) : (
+              <Verify2FA />
+            )}
+          </PublicRoute>
         }
       />
 
