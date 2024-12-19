@@ -58,3 +58,27 @@ Controller.getGenderImages = async (req, res, next) => {
     return next(error);
   }
 };
+
+Controller.deleteImageDetails = async (req, res, next) => {
+  try {
+    await MediaService.deleteImageDetails(req, res, next);
+  } catch (error) {
+    return next(error);
+  }
+};
+
+Controller.getTrashImageDetails = async (req, res, next) => {
+  try {
+    await MediaService.getTrashImageDetails(req, res, next);
+  } catch (error) {
+    return next(error);
+  }
+};
+
+Controller.restoreImageDetails = async (req, res, next) => {
+  try {
+    await MediaService.restoreImageDetails(req, res, next);
+  } catch (error) {
+    return next(error);
+  }
+};

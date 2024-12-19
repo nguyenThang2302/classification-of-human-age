@@ -9,3 +9,4 @@ export * from './HistoryImageDetail';
 export * from './Verify2FA';
 export * from './ForgotPassword';
 export * from './VerifyForgotCode';
+export * from './Trash';

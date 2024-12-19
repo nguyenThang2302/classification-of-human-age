@@ -20,6 +20,18 @@ const ImageDetails = new EntitySchema({
         age: {
             type: 'int',
         },
+        created_at: {
+            type: 'timestamp',
+            createDate: true,
+        },
+        updated_at: {
+            type: 'timestamp',
+            updateDate: true,
+        },
+        deleted_at: {
+            type: 'timestamp',
+            nullable: true,
+        },
     },
     relations: {
       image: {

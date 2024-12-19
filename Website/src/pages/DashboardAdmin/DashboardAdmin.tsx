@@ -1,12 +1,11 @@
 /* eslint-disable prettier/prettier */
 import React, { useState } from 'react';
 import { Uploads, History, SidebarAdmin, Profile, Search, Download } from '@/components';
-import { useNavigate } from "react-router-dom";
+import { Trash } from '../Trash';
 import Setting from '@/components/Setting/Setting';
 
 function DashboardAdmin() {
   const [selectedSection, setSelectedSection] = useState('uploads');
-  const navigate = useNavigate();
 
   const renderSection = () => {
     if (selectedSection === 'uploads') {
@@ -24,6 +23,8 @@ function DashboardAdmin() {
       return <Download />;
     } else if (selectedSection === 'setting') {
       return <Setting />;
+    } else if (selectedSection === 'trash-image') {
+      return <Trash />;
     }
   };
 
