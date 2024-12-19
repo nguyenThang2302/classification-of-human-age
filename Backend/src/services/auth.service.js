@@ -8,6 +8,7 @@ const { AuthMapper } = require('../mappers/index');
 const speakeasy = require('speakeasy');
 const QRCode = require('qrcode');
 const { auth } = require('../config/nodemailer.config');
+const Constants = require('../constants');
 
 const { JWT_SECRET_KEY, JWT_ACCESS_TOKEN_EXPIRES_IN} = process.env;
 
@@ -24,6 +25,7 @@ AuthService.registerService = async (user, req, res, next) => {
       name: user.name,
       email: user.email,
       password: hashedPassword,
+      role_id: Constants.ROLES.USER,
       secret: '',
     };
     const userInsert = await insertUser(userData);
@@ -40,7 +42,8 @@ AuthService.loginService = async (user, req, res, next) => {
 
     const payload = {
       id: userData.id,
-      email: userData.email
+      email: userData.email,
+      role_id: userData.role_id
     };
 
     const accessToken = await jwt.sign(payload, JWT_SECRET_KEY, { expiresIn: parseInt(JWT_ACCESS_TOKEN_EXPIRES_IN) });

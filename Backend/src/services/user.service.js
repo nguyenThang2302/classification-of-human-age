@@ -3,6 +3,7 @@ const { AppDataSource } = require('../database/ormconfig');
 const User = require('../database/entities/user.entity');
 const bcrypt = require('bcrypt');
 const { BadRequestError } = require('../errors');
+const { ok } = require('../helpers/response.helper');
 
 const UserService = module.exports;
 const userRepository = AppDataSource.getRepository(User);
@@ -43,3 +44,16 @@ UserService.updatePassword = async (userID, password) => {
 UserService.update2FA = async (userID, secret, is2FAEnable) => {
   await userRepository.update(userID, { secret: secret, is_2fa_enabled: is2FAEnable });
 };
+
+UserService.getListMail = async (req, res, next) => {
+  try {
+    const users = await userRepository.createQueryBuilder('users')
+      .select(['users.email'])
+      .orderBy('users.created_at', 'DESC')
+      .getMany();
+
+    return ok(req, res, { items: users });
+  } catch (error) {
+    return next(error);
+  }
+}

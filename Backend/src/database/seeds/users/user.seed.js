@@ -10,11 +10,13 @@ async function seedUsers() {
       id: 1,
       name: 'Alice',
       email: 'alice@example.com',
+      role_id: 1,
     },
     {
       id: 2,
       name: 'Bob',
       email: 'bob@example.com',
+      role_id: 2,
     },
   ];
 
