@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../Search/Search.css";
 import { FaChevronLeft, FaChevronRight, FaEye, FaSearch, FaSyncAlt, FaSave } from "react-icons/fa";
+import { MdDeleteForever } from "react-icons/md";
 import { IoCloseCircle } from "react-icons/io5";
 import { searchImage } from "@/services/media/searchImage";
 import { format } from 'date-fns';
@@ -9,6 +10,7 @@ import { getImageDetail } from "@/services/admin/getImageDetail";
 import { FaLongArrowAltRight } from "react-icons/fa";
 import { adminUpdateImageDetail } from "@/services/admin/updateImageDetail";
 import { toast } from "react-toastify";
+import { removeImageDetail } from "@/services/admin/removeImageDetail";
 
 type Image = {
   id: number;
@@ -106,6 +108,21 @@ function Search() {
     } catch (error) {
       console.error("Error update image details:", error);
       throw error;
+    }
+  };
+
+  const handleRemoveImageDetail = async (image_detail_id: any) => {
+    try {
+      const response = await removeImageDetail(image_detail_id);
+      if (response.data.message === 'Success') {
+        toast.success("Remove image successfully!");
+        const response = await getImageDetail(selectedChangeImageId);
+        setDataImageDetails(response);
+      }
+    } catch (error) {
+      console.error("Error remove image details:", error);
+      throw error
+
     }
   };
 
@@ -435,6 +452,10 @@ function Search() {
                                   <button className="btn-search" onClick={() => updateImageDetail(row?.id, row?.gender, row?.age)} style={{ marginBottom: "10px", backgroundColor: '#17a2b8', borderColor: '#17a2b8' }}>
                                     <FaSave style={{ marginRight: '8px' }} />
                                     Save
+                                  </button>
+                                  <button className="btn-search" onClick={() => handleRemoveImageDetail(row?.id)} style={{ marginBottom: "10px", backgroundColor: '#ffc107', borderColor: '#ffc107', marginLeft: '10px' }}>
+                                    <MdDeleteForever style={{ marginRight: '8px' }} />
+                                    Remove
                                   </button>
                                 </td>
                               </tr>
