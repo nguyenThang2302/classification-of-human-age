@@ -100,9 +100,9 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             # Deploy BE if the tag starts with qa/be/
-            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/my-node-app:${{ github.sha }}
-            docker stop my-node-app || true
-            docker rm my-node-app || true
+            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/my-node-app:${{ github.sha }}
+            sudo docker stop my-node-app || true
+            sudo docker rm my-node-app || true
             sudo docker run -d --network my-network -p 6996:6996 --name my-node-app ${{ secrets.DOCKERHUB_USERNAME }}/my-node-app:${{ github.sha }}
 
       - name: Deploy AI to server
