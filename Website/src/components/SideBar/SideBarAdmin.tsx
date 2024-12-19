@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import React, { useState } from 'react';
 import '../SideBar/SideBar.css';
-import { FaBook, FaAngleDoubleDown, FaAngleDoubleUp, FaSignOutAlt, FaUser, FaSearch, FaUpload, FaHistory, FaDownload } from 'react-icons/fa';
+import { FaBook, FaAngleDoubleDown, FaAngleDoubleUp, FaSignOutAlt, FaUser, FaSearch, FaUpload, FaHistory, FaDownload, FaTrash } from 'react-icons/fa';
 import { IoMdSettings } from 'react-icons/io';
 
 const SidebarAdmin = ({ onMenuClick }: any) => {
@@ -41,6 +41,12 @@ const SidebarAdmin = ({ onMenuClick }: any) => {
               <button onClick={() => onMenuClick('download-image')}>
                 <FaDownload style={{ marginRight: '8px' }} />
                 Download images
+              </button>
+            </li>
+            <li>
+              <button onClick={() => onMenuClick('trash-image')}>
+                <FaTrash style={{ marginRight: '8px' }} />
+                Trash
               </button>
             </li>
           </ul>
