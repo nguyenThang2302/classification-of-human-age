@@ -161,6 +161,7 @@ MediaService.adminGetImageDetails = async (req, res, next) => {
       .innerJoin('image_details.image', 'images', 'images.id = :image_id', { image_id: imageID })
       .select()
       .where('image_details.image_id = :image_id', { image_id: imageID })
+      .andWhere('image_details.deleted_at IS NULL')
       .getMany();
 
     return ok(req, res, MediaMapper.toImageDetailResponse(imageDetails));
@@ -231,6 +232,53 @@ MediaService.getGenderImages = async (req, res, next) => {
       .getMany();
 
     return ok(req, res, MediaMapper.toGenderImagesResponse(genderImages));
+  } catch (error) {
+    return next(error);
+  }
+};
+
+MediaService.deleteImageDetails = async (req, res, next) => {
+  try {
+    const imageDetailsID = parseInt(req.params.image_detail_id);
+    const imageDetails = await imageDetailRepository.findOneBy({ id: imageDetailsID });
+    if (!imageDetails) {
+      return next(new BadRequestError('Image not found'));
+    }
+
+    await imageDetailRepository.update({ id: imageDetailsID }, {
+      deleted_at: new Date()
+    });
+    return ok(req, res, MediaMapper.deleteImageDetails());
+  } catch (error) {
+    return next(error);
+  }
+};
+
+MediaService.getTrashImageDetails = async (req, res, next) => {
+  try {
+    const trashImageDetails = await imageDetailRepository.createQueryBuilder('image_details')
+      .select()
+      .where('image_details.deleted_at IS NOT NULL')
+      .getMany();
+
+    return ok(req, res, MediaMapper.toImageDetailResponse(trashImageDetails));
+  } catch (error) {
+    return next(error);
+  }
+};
+
+MediaService.restoreImageDetails = async (req, res, next) => {
+  try {
+    const imageDetailsID = parseInt(req.params.image_detail_id);
+    const imageDetails = await imageDetailRepository.findOneBy({ id: imageDetailsID });
+    if (!imageDetails) {
+      return next(new BadRequestError('Image not found'));
+    }
+
+    await imageDetailRepository.update({ id: imageDetailsID }, {
+      deleted_at: null
+    });
+    return ok(req, res, MediaMapper.deleteImageDetails());
   } catch (error) {
     return next(error);
   }

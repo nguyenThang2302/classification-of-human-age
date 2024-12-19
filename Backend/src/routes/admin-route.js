@@ -45,6 +45,24 @@ function addRoutes(router, middleware, controllers) {
     middleware.adminAuthorizer,
     controllers.adminController.getListMail
   );
+
+  router.delete(
+    '/image-details/:image_detail_id',
+    middleware.adminAuthorizer,
+    controllers.adminController.deleteImageDetails
+  );
+
+  router.get(
+    '/trash-image-details',
+    middleware.adminAuthorizer,
+    controllers.adminController.getTrashImageDetails
+  );
+
+  router.put(
+    '/trash-image-details/:image_detail_id/restore',
+    middleware.adminAuthorizer,
+    controllers.adminController.restoreImageDetails
+  );
 }
 
 function apiRouter(middleware, controllers) {
